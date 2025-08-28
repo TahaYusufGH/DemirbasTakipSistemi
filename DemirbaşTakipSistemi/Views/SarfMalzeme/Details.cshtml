@@ -1,0 +1,142 @@
+@model DemirbaşTakipSistemi.Models.SarfMalzeme
+@using DemirbaşTakipSistemi.Models.Enums
+
+@{
+    ViewData["Title"] = "Sarf Malzeme Detayı";
+}
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-info-circle me-2"></i> @ViewData["Title"]</h3>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light btn-sm me-1">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a asp-action="Index" class="btn btn-light btn-sm">
+                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-3">Temel Bilgiler</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Malzeme Kodu</dt>
+                        <dd class="col-sm-8">@Model.MalzemeKodu</dd>
+
+                        <dt class="col-sm-4">Ad</dt>
+                        <dd class="col-sm-8">@Model.Ad</dd>
+
+                        <dt class="col-sm-4">Kategori</dt>
+                        <dd class="col-sm-8">@Model.Kategori</dd>
+
+                        <dt class="col-sm-4">Birim</dt>
+                        <dd class="col-sm-8">@Model.Birim</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">Stok Bilgileri</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Mevcut Stok</dt>
+                        <dd class="col-sm-8">
+                            @{
+                                var stokClass = Model.MevcutStok <= Model.MinimumStok ? "text-danger fw-bold" : "text-success";
+                            }
+                            <span class="@stokClass">@Model.MevcutStok @Model.Birim</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Minimum Stok</dt>
+                        <dd class="col-sm-8">@Model.MinimumStok @Model.Birim</dd>
+
+                        <dt class="col-sm-4">Son Güncelleme</dt>
+                        <dd class="col-sm-8">@Model.SonGuncelleme.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Açıklama</dt>
+                        <dd class="col-sm-8">
+                            @if (!string.IsNullOrEmpty(Model.Aciklama))
+                            {
+                                @Model.Aciklama
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            @if (Model.DepoIslemler.Any())
+            {
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4 class="mb-3">İşlem Geçmişi</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tarih</th>
+                                        <th>İşlem Tipi</th>
+                                        <th>Miktar</th>
+                                        <th>İşlemi Yapan</th>
+                                        <th>Talep Eden</th>
+                                        <th>Açıklama</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var islem in Model.DepoIslemler.OrderByDescending(d => d.IslemTarihi))
+                                    {
+                                        <tr>
+                                            <td>@islem.IslemTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>
+                                                @{
+                                                    var badgeClass = islem.IslemTipi switch
+                                                    {
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Giris => "bg-success",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Cikis => "bg-danger",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Transfer => "bg-info",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Iade => "bg-warning",
+                                                        _ => "bg-primary"
+                                                    };
+                                                }
+                                                <span class="badge @badgeClass">@islem.IslemTipi</span>
+                                            </td>
+                                            <td>@islem.Miktar @Model.Birim</td>
+                                            <td>@($"{islem.IslemYapan.Ad} {islem.IslemYapan.Soyad}")</td>
+                                            <td>
+                                                @if (islem.TalepEden != null)
+                                                {
+                                                    @($"{islem.TalepEden.Ad} {islem.TalepEden.Soyad}")
+                                                }
+                                                else
+                                                {
+                                                    <span>-</span>
+                                                }
+                                            </td>
+                                            <td>@(islem.Aciklama ?? "-")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                },
+                order: [[0, 'desc']]
+            });
+        });
+    </script>
+} 

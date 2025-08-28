@@ -1,0 +1,152 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.SarfMalzemeVerViewModel
+
+@{
+    ViewData["Title"] = "Sarf Malzeme Ver";
+}
+
+<div class="container-fluid">
+    <h2>Sarf Malzeme Ver</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Sarf Malzeme Listesine Dön
+                </a>
+                <a asp-action="MalzemeArsivi" class="btn btn-info">
+                    <i class="fas fa-archive"></i> Sarf Malzeme Arşivi
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-share-square me-1"></i>
+                    Sarf Malzeme Ver
+                </div>
+                <div class="card-body">
+                    <form asp-action="MalzemeVer" method="post">
+                        <div class="form-group mb-3">
+                            <label asp-for="SecilenMalzemeId" class="form-label">Malzeme</label>
+                            <select asp-for="SecilenMalzemeId" class="form-control select2" required>
+                                <option value="">-- Malzeme Seçin --</option>
+                                @foreach (var kategori in Model.SarfMalzemeler.Select(s => s.Kategori).Distinct())
+                                {
+                                    <optgroup label="@kategori">
+                                        @foreach (var malzeme in Model.SarfMalzemeler.Where(s => s.Kategori == kategori))
+                                        {
+                                            <option value="@malzeme.Id">@malzeme.Ad (@malzeme.MevcutStok @malzeme.Birim)</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <span asp-validation-for="SecilenMalzemeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Miktar" class="form-label"></label>
+                            <input asp-for="Miktar" class="form-control" type="number" min="1" required />
+                            <span asp-validation-for="Miktar" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="SecilenPersonelId" class="form-label">Personel</label>
+                            <select asp-for="SecilenPersonelId" class="form-control select2" required>
+                                <option value="">-- Personel Seçin --</option>
+                                @foreach (var personel in Model.Personeller)
+                                {
+                                    <option value="@personel.Id">@personel.AdSoyad (@(personel.SicilNo ?? "Sicil No Yok"))</option>
+                                }
+                            </select>
+                            <span asp-validation-for="SecilenPersonelId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="SecilenOdaId" class="form-label">Oda</label>
+                            <select asp-for="SecilenOdaId" class="form-control select2">
+                                <option value="">-- Oda Seçin (Opsiyonel) --</option>
+                                @foreach (var oda in Model.Odalar)
+                                {
+                                    <option value="@oda.Id">@oda.OdaKodu - @oda.Ad</option>
+                                }
+                            </select>
+                            <span asp-validation-for="SecilenOdaId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Aciklama" class="form-label"></label>
+                            <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Aciklama" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-share-square"></i> Malzeme Ver
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Malzeme Bilgisi
+                </div>
+                <div class="card-body">
+                    <div id="malzemeBilgisi" class="text-center">
+                        <p class="text-muted">Malzeme seçildiğinde detaylar burada görüntülenecektir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%'
+            });
+
+            // Malzeme seçildiğinde bilgileri göster
+            $('#SecilenMalzemeId').change(function () {
+                var malzemeId = $(this).val();
+                if (malzemeId) {
+                    var malzemeler = @Html.Raw(Json.Serialize(Model.SarfMalzemeler));
+                    var seciliMalzeme = malzemeler.find(m => m.id == malzemeId);
+                    
+                    if (seciliMalzeme) {
+                        var html = `
+                            <div class="card border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    ${seciliMalzeme.ad}
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Malzeme Kodu:</strong> ${seciliMalzeme.malzemeKodu}</p>
+                                    <p><strong>Kategori:</strong> ${seciliMalzeme.kategori}</p>
+                                    <p><strong>Marka/Model:</strong> ${seciliMalzeme.marka} ${seciliMalzeme.model ? '/ ' + seciliMalzeme.model : ''}</p>
+                                    <p><strong>Mevcut Stok:</strong> ${seciliMalzeme.mevcutStok} ${seciliMalzeme.birim}</p>
+                                    <p><strong>Minimum Stok:</strong> ${seciliMalzeme.minimumStok} ${seciliMalzeme.birim}</p>
+                                    ${seciliMalzeme.aciklama ? '<p><strong>Açıklama:</strong> ' + seciliMalzeme.aciklama + '</p>' : ''}
+                                </div>
+                            </div>
+                        `;
+                        $('#malzemeBilgisi').html(html);
+                        
+                        // Maksimum miktar sınırlaması
+                        $('#Miktar').attr('max', seciliMalzeme.mevcutStok);
+                    }
+                } else {
+                    $('#malzemeBilgisi').html('<p class="text-muted">Malzeme seçildiğinde detaylar burada görüntülenecektir.</p>');
+                    $('#Miktar').removeAttr('max');
+                }
+            });
+        });
+    </script>
+}

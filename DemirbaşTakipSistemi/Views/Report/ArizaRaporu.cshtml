@@ -1,0 +1,107 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.ArizaRaporViewModel
+
+@{
+    ViewData["Title"] = "Arıza Raporu";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <!-- Arıza Durumları -->
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie me-1"></i>
+                    Arıza Durumlarına Göre Dağılım
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Durum</th>
+                                    <th>Sayı</th>
+                                    <th>Oran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var toplamDurumAriza = Model.ArizaDurumlari.Sum(d => d.Sayi);
+                                }
+                                @foreach (var durum in Model.ArizaDurumlari)
+                                {
+                                    var oran = toplamDurumAriza > 0 ? (durum.Sayi * 100.0 / toplamDurumAriza) : 0;
+                                    <tr>
+                                        <td>@durum.Durum</td>
+                                        <td>@durum.Sayi</td>
+                                        <td>@($"{oran:N1}%")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td>Toplam</td>
+                                    <td>@toplamDurumAriza</td>
+                                    <td>100%</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Demirbaş Arızaları -->
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-tools me-1"></i>
+                    Demirbaşlara Göre Arıza Dağılımı
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Demirbaş</th>
+                                    <th>Arıza Sayısı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var demirbas in Model.DemirbasArizalari)
+                                {
+                                    <tr>
+                                        <td>@demirbas.DemirbasAdi</td>
+                                        <td>@demirbas.ArizaSayisi</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td>Toplam</td>
+                                    <td>@Model.DemirbasArizalari.Sum(d => d.ArizaSayisi)</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                },
+                order: [[1, 'desc']]
+            });
+        });
+    </script>
+} 

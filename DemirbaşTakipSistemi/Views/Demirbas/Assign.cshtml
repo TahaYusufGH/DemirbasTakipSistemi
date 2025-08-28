@@ -1,0 +1,51 @@
+@model DemirbaşTakipSistemi.Models.Demirbas
+
+@{
+    ViewData["Title"] = "Demirbaş Zimmetle";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-user-plus me-1"></i>
+            Zimmet Bilgileri - @Model.DemirbasKodu (@Model.Ad)
+        </div>
+        <div class="card-body">
+            <form asp-action="Assign">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="demirbasId" value="@Model.Id" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="personelId" class="control-label">Personel</label>
+                            <select name="personelId" id="personelId" class="form-select" asp-items="ViewBag.PersonelId">
+                                <option value="">-- Personel Seçiniz --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="aciklama" class="control-label">Açıklama</label>
+                            <textarea name="aciklama" id="aciklama" class="form-control" rows="3" placeholder="Zimmet açıklaması (isteğe bağlı)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-1"></i> Zimmetle
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

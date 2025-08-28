@@ -1,0 +1,176 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.DepoRaporViewModel
+
+@{
+    ViewData["Title"] = "Depo Raporu";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <!-- İşlem Tipi Dağılımı -->
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    İşlem Tiplerine Göre Dağılım
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>İşlem Tipi</th>
+                                    <th>Sayı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var tip in Model.IslemTipDagilimi)
+                                {
+                                    <tr>
+                                        <td>@tip.IslemTipi</td>
+                                        <td>@tip.IslemSayisi</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td>Toplam</td>
+                                    <td>@Model.IslemTipDagilimi.Sum(t => t.IslemSayisi)</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sarf Malzeme Stok Durumu -->
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-boxes me-1"></i>
+                    Sarf Malzeme Stok Durumu
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Malzeme</th>
+                                    <th>Kategori</th>
+                                    <th>Mevcut Stok</th>
+                                    <th>Minimum Stok</th>
+                                    <th>Stok Durumu</th>
+                                    <th>Birim</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var malzeme in Model.SarfMalzemeStokDurumu)
+                                {
+                                    var stokDurumu = malzeme.MevcutStok <= malzeme.MinimumStok ? "text-danger fw-bold" : "text-success";
+                                    <tr>
+                                        <td>@malzeme.MalzemeAdi</td>
+                                        <td>@malzeme.Kategori</td>
+                                        <td>@malzeme.MevcutStok</td>
+                                        <td>@malzeme.MinimumStok</td>
+                                        <td>
+                                            <span class="@stokDurumu">
+                                                @if (malzeme.MevcutStok <= malzeme.MinimumStok)
+                                                {
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                                    @:Kritik Seviye
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-check-circle me-1"></i>
+                                                    @:Yeterli
+                                                }
+                                            </span>
+                                        </td>
+                                        <td>@malzeme.Birim</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="2">Toplam</td>
+                                    <td>@Model.SarfMalzemeStokDurumu.Sum(m => m.MevcutStok)</td>
+                                    <td>@Model.SarfMalzemeStokDurumu.Sum(m => m.MinimumStok)</td>
+                                    <td>
+                                        @{
+                                            var kritikSeviyedekiler = Model.SarfMalzemeStokDurumu.Count(m => m.MevcutStok <= m.MinimumStok);
+                                        }
+                                        @if (kritikSeviyedekiler > 0)
+                                        {
+                                            <span class="text-danger">@kritikSeviyedekiler adet kritik seviyede</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success">Tümü yeterli seviyede</span>
+                                        }
+                                    </td>
+                                    <td>-</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Personel Talepleri -->
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-users me-1"></i>
+                    Personele Göre Talep Dağılımı
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Personel</th>
+                                    <th>Talep Sayısı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var personel in Model.PersonelTalepleri)
+                                {
+                                    <tr>
+                                        <td>@personel.PersonelAdi</td>
+                                        <td>@personel.TalepSayisi</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td>Toplam</td>
+                                    <td>@Model.PersonelTalepleri.Sum(p => p.TalepSayisi)</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                },
+                order: [[1, 'desc']]
+            });
+        });
+    </script>
+} 

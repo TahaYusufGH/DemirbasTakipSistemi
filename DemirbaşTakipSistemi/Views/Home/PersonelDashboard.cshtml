@@ -1,0 +1,176 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.PersonelDashboardViewModel
+
+@{
+    ViewData["Title"] = "Personel Paneli";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <!-- Zimmetli Demirbaşlar -->
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-user-check me-1"></i>
+                    Zimmetli Demirbaşlar
+                </div>
+                <div class="card-body">
+                    @if (Model.ZimmetliDemirbaslar.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var demirbas in Model.ZimmetliDemirbaslar)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@demirbas.Ad</h6>
+                                        <small>@demirbas.DemirbasKodu</small>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @if (!string.IsNullOrEmpty(demirbas.SeriNo))
+                                            {
+                                                <small class="text-muted">SN: @demirbas.SeriNo</small>
+                                            }
+                                        </div>
+                                        <div>
+                                            @if (demirbas.Oda != null)
+                                            {
+                                                <span class="badge bg-info">@demirbas.Oda.Ad</span>
+                                            }
+                                            <a asp-controller="Ariza" asp-action="Create" asp-route-demirbasId="@demirbas.Id" class="btn btn-warning btn-sm ms-2">
+                                                <i class="fas fa-exclamation-triangle"></i> Arıza Bildir
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Zimmetinizde demirbaş bulunmuyor.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Arıza Bildirimleri -->
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Arıza Bildirimleri
+                </div>
+                <div class="card-body">
+                    @if (Model.Arizalar.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var ariza in Model.Arizalar)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@ariza.Demirbas.Ad</h6>
+                                        <small>@ariza.ArizaTarihi.ToString("dd.MM.yyyy HH:mm")</small>
+                                    </div>
+                                    <p class="mb-1">@ariza.Aciklama</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @if (!string.IsNullOrEmpty(ariza.Cozum))
+                                            {
+                                                <small class="text-muted">Çözüm: @ariza.Cozum</small>
+                                            }
+                                        </div>
+                                        @{
+                                            var badgeClass = ariza.Durum switch
+                                            {
+                                                "Beklemede" => "bg-warning",
+                                                "İncelemede" => "bg-info",
+                                                "Çözüldü" => "bg-success",
+                                                "İptal" => "bg-secondary",
+                                                _ => "bg-primary"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@ariza.Durum</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Henüz arıza bildirimi yapmadınız.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Depo İşlemleri -->
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-warehouse me-1"></i>
+                    Depo İşlemleri
+                </div>
+                <div class="card-body">
+                    @if (Model.DepoIslemleri.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var islem in Model.DepoIslemleri)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@islem.SarfMalzeme.Ad</h6>
+                                        <small>@islem.IslemTarihi.ToString("dd.MM.yyyy HH:mm")</small>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>@($"{islem.Miktar} {islem.SarfMalzeme.Birim}")</span>
+                                        @{
+                                            var badgeClass = islem.IslemTipi switch
+                                            {
+                                                DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Giris => "bg-success",
+                                                DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Cikis => "bg-danger",
+                                                DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Transfer => "bg-info",
+                                                DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Iade => "bg-warning",
+                                                _ => "bg-primary"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@islem.IslemTipi</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">@islem.Aciklama</small>
+                                        @{
+                                            var onayBadgeClass = islem.OnayDurumu switch
+                                            {
+                                                "Beklemede" => "bg-warning",
+                                                "Onaylandı" => "bg-success",
+                                                "Reddedildi" => "bg-danger",
+                                                _ => "bg-primary"
+                                            };
+                                        }
+                                        <span class="badge @onayBadgeClass">@islem.OnayDurumu</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Henüz depo işlemi talebiniz bulunmuyor.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

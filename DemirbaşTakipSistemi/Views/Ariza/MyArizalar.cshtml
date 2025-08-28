@@ -1,0 +1,93 @@
+@model IEnumerable<DemirbaşTakipSistemi.Models.Ariza>
+
+@{
+    ViewData["Title"] = "Arıza Bildirimlerim";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Arıza Bildirimlerim</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Arıza Bildirimleri</h6>
+            <a asp-action="Create" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Yeni Arıza Bildir
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Demirbaş</th>
+                            <th>Arıza Tarihi</th>
+                            <th>Açıklama</th>
+                            <th>Durum</th>
+                            <th>Çözüm</th>
+                            <th>Çözüm Tarihi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Demirbas.Ad (@item.Demirbas.DemirbasKodu)
+                                </td>
+                                <td>
+                                    @item.ArizaTarihi.ToString("dd.MM.yyyy HH:mm")
+                                </td>
+                                <td>
+                                    @item.Aciklama
+                                </td>
+                                <td>
+                                    @if (item.Durum == "Beklemede")
+                                    {
+                                        <span class="badge badge-warning">Beklemede</span>
+                                    }
+                                    else if (item.Durum == "İncelemede")
+                                    {
+                                        <span class="badge badge-primary">İncelemede</span>
+                                    }
+                                    else if (item.Durum == "Çözüldü")
+                                    {
+                                        <span class="badge badge-success">Çözüldü</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">@item.Durum</span>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cozum)
+                                </td>
+                                <td>
+                                    @(item.CozumTarihi.HasValue ? item.CozumTarihi.Value.ToString("dd.MM.yyyy HH:mm") : "-")
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "order": [[1, "desc"]]
+            });
+        });
+    </script>
+} 

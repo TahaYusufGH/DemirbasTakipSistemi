@@ -1,0 +1,193 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.DepoTopluEklemeViewModel
+@using DemirbaşTakipSistemi.Models.Enums
+
+@{
+    ViewData["Title"] = "Depoya Toplu Ekleme";
+}
+
+<div class="container-fluid">
+    <h2>Depoya Toplu Ekleme</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Depo Listesine Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-plus-circle me-1"></i>
+            Toplu Demirbaş Ekleme
+        </div>
+        <div class="card-body">
+            <form asp-action="TopluEkleme" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Kategori" class="form-label"></label>
+                            <div class="input-group">
+                                <select asp-for="Kategori" class="form-control" id="kategoriSelect">
+                                    <option value="">-- Kategori Seçin --</option>
+                                    @foreach (var kategori in Model.Kategoriler)
+                                    {
+                                        <option value="@kategori">@kategori</option>
+                                    }
+                                </select>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#yeniKategoriModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Kategori" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AltKategori" class="form-label"></label>
+                            <input asp-for="AltKategori" class="form-control" />
+                            <span asp-validation-for="AltKategori" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Durum" class="form-label"></label>
+                            <select asp-for="Durum" class="form-control">
+                                <option value="0">Aktif</option>
+                                <option value="1">Zimmetli</option>
+                                <option value="2">Arizali</option>
+                                <option value="3">Bakimda</option>
+                                <option value="4">Hurda</option>
+                                <option value="5" selected>Depoda</option>
+                                <option value="6">Zimmette</option>
+                                <option value="7">Iade</option>
+                            </select>
+                            <span asp-validation-for="Durum" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Birim" class="form-label"></label>
+                            <select asp-for="Birim" class="form-control">
+                                <option value="">-- Birim Seçin --</option>
+                                <option value="Adet">Adet</option>
+                                <option value="Kutu">Kutu</option>
+                                <option value="Paket">Paket</option>
+                                <option value="Set">Set</option>
+                                <option value="Takım">Takım</option>
+                            </select>
+                            <span asp-validation-for="Birim" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="OdaId" class="form-label">Oda Numarası</label>
+                            <select asp-for="OdaId" class="form-control select2">
+                                <option value="">-- Oda Seçin (Opsiyonel) --</option>
+                                @foreach (var oda in Model.Odalar)
+                                {
+                                    <option value="@oda.Id">@oda.OdaKodu - @oda.Ad</option>
+                                }
+                            </select>
+                            <span asp-validation-for="OdaId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Marka" class="form-label"></label>
+                            <input asp-for="Marka" class="form-control" />
+                            <span asp-validation-for="Marka" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AlimTarihi" class="form-label"></label>
+                            <input asp-for="AlimTarihi" class="form-control" type="date" />
+                            <span asp-validation-for="AlimTarihi" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Aciklama" class="form-label"></label>
+                            <input asp-for="Aciklama" class="form-control" />
+                            <span asp-validation-for="Aciklama" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SeriNumaralari" class="form-label"></label>
+                    <textarea asp-for="SeriNumaralari" class="form-control" rows="5" placeholder="Seri numaralarını her satıra bir tane veya virgülle ayırarak giriniz."></textarea>
+                    <small class="form-text text-muted">Her satıra bir seri numarası yazabilir veya virgülle ayırabilirsiniz.</small>
+                    <span asp-validation-for="SeriNumaralari" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Toplu Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Yeni Kategori Modal -->
+<div class="modal fade" id="yeniKategoriModal" tabindex="-1" aria-labelledby="yeniKategoriModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="yeniKategoriModalLabel">Yeni Kategori Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="yeniKategoriAdi" class="form-label">Kategori Adı</label>
+                    <input type="text" id="yeniKategoriAdi" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" id="yeniKategoriEkleBtn">Ekle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%'
+            });
+
+            // Yeni kategori ekleme
+            $('#yeniKategoriEkleBtn').click(function () {
+                var yeniKategori = $('#yeniKategoriAdi').val().trim();
+                if (yeniKategori) {
+                    // Kategori select'e ekle
+                    $('#kategoriSelect').append(new Option(yeniKategori, yeniKategori));
+                    $('#kategoriSelect').val(yeniKategori).trigger('change');
+                    
+                    // Modal'ı kapat
+                    $('#yeniKategoriModal').modal('hide');
+                    $('#yeniKategoriAdi').val('');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,25 @@
+@model DemirbaşTakipSistemi.Models.Oda
+@{
+    ViewData["Title"] = "Oda Düzenle";
+}
+<h2>Oda Düzenle</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label"></label>
+        <input asp-for="Ad" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Kat" class="form-label"></label>
+        <input asp-for="Kat" class="form-control" />
+        <span asp-validation-for="Kat" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SorumluPersonelId" class="form-label">Sorumlu Personel Id</label>
+        <input asp-for="SorumluPersonelId" class="form-control" />
+        <span asp-validation-for="SorumluPersonelId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 

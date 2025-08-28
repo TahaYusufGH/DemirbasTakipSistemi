@@ -1,0 +1,19 @@
+@model DemirbaşTakipSistemi.Models.Oda
+@{
+    ViewData["Title"] = "Oda Sil";
+}
+<h2>Oda Sil</h2>
+<div class="alert alert-danger">Bu odayı silmek istediğinize emin misiniz?</div>
+<dl class="row">
+    <dt class="col-sm-2">Ad</dt>
+    <dd class="col-sm-10">@Model.Ad</dd>
+    <dt class="col-sm-2">Kat</dt>
+    <dd class="col-sm-10">@Model.Kat</dd>
+    <dt class="col-sm-2">Sorumlu Personel Id</dt>
+    <dd class="col-sm-10">@Model.SorumluPersonelId</dd>
+</dl>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form> 

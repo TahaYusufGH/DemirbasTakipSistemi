@@ -1,0 +1,356 @@
+@{
+    ViewData["Title"] = "Demirbaş Aktarma";
+}
+
+<div class="container-fluid">
+    <h2 class="mt-4">Demirbaş Aktarma İşlemi</h2>
+    <hr />
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-exchange-alt me-1"></i>
+                    Demirbaş Aktarma
+                </div>
+                <div class="card-body">
+                    <form id="aktarmaForm" method="post" asp-action="AktarmaYap">
+                        @Html.AntiForgeryToken()
+                        <div class="row mb-4">
+                            <!-- Kaynak Personel Seçimi -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="fas fa-user me-1"></i> Kaynak Personel
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Personel Ara (Sicil No veya Ad Soyad)</label>
+                                            <div class="input-group">
+                                                <input type="text" id="kaynakPersonelArama" class="form-control" placeholder="Sicil no veya ad soyad girin...">
+                                                <button type="button" id="kaynakPersonelAraBtn" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="kaynakPersonelSonuclar" class="list-group mb-3" style="max-height: 200px; overflow-y: auto;"></div>
+                                        <div id="kaynakPersonelBilgi" class="d-none">
+                                            <div class="alert alert-info">
+                                                <h5 id="kaynakPersonelAdSoyad"></h5>
+                                                <p class="mb-0">Sicil No: <span id="kaynakPersonelSicilNo"></span></p>
+                                                <p class="mb-0">Departman: <span id="kaynakPersonelDepartman"></span></p>
+                                            </div>
+                                            <input type="hidden" id="kaynakPersonelId" name="kaynakPersonelId">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hedef Personel Seçimi -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-success text-white">
+                                        <i class="fas fa-user-plus me-1"></i> Hedef Personel
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Personel Ara (Sicil No veya Ad Soyad)</label>
+                                            <div class="input-group">
+                                                <input type="text" id="hedefPersonelArama" class="form-control" placeholder="Sicil no veya ad soyad girin...">
+                                                <button type="button" id="hedefPersonelAraBtn" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="hedefPersonelSonuclar" class="list-group mb-3" style="max-height: 200px; overflow-y: auto;"></div>
+                                        <div id="hedefPersonelBilgi" class="d-none">
+                                            <div class="alert alert-info">
+                                                <h5 id="hedefPersonelAdSoyad"></h5>
+                                                <p class="mb-0">Sicil No: <span id="hedefPersonelSicilNo"></span></p>
+                                                <p class="mb-0">Departman: <span id="hedefPersonelDepartman"></span></p>
+                                            </div>
+                                            <input type="hidden" id="hedefPersonelId" name="hedefPersonelId">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Demirbaş Listesi -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header bg-info text-white">
+                                        <i class="fas fa-list me-1"></i> Aktarılacak Demirbaşlar
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="demirbasYukleniyor" class="text-center d-none">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Yükleniyor...</span>
+                                            </div>
+                                            <p>Demirbaşlar yükleniyor...</p>
+                                        </div>
+                                        <div id="demirbasYok" class="alert alert-warning d-none">
+                                            <i class="fas fa-exclamation-triangle me-1"></i> Seçilen personele ait zimmetli demirbaş bulunamadı.
+                                        </div>
+                                        <div id="demirbasTabloContainer" class="d-none">
+                                            <div class="table-responsive">
+                                                <table id="demirbasTable" class="table table-bordered table-hover">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th width="50px">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" id="tumunuSec">
+                                                                </div>
+                                                            </th>
+                                                            <th>Demirbaş Kodu</th>
+                                                            <th>Demirbaş Adı</th>
+                                                            <th>Marka</th>
+                                                            <th>Model</th>
+                                                            <th>Zimmet Tarihi</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="demirbasListesi">
+                                                        <!-- JavaScript ile doldurulacak -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- İşlem Butonları -->
+                        <div class="row mt-4">
+                            <div class="col-md-12 text-end">
+                                <button type="button" id="aktarmaIptal" class="btn btn-secondary me-2">İptal</button>
+                                <button type="submit" id="aktarmaOnay" class="btn btn-primary" disabled>Aktarma İşlemini Tamamla</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Personel arama fonksiyonları
+            function personelAra(aramaKriteri, tip) {
+                if (aramaKriteri.length < 2) return;
+                
+                const sonuclarDiv = tip === 'kaynak' ? $('#kaynakPersonelSonuclar') : $('#hedefPersonelSonuclar');
+                sonuclarDiv.html('<div class="text-center"><div class="spinner-border spinner-border-sm" role="status"></div> Aranıyor...</div>');
+                
+                $.ajax({
+                    url: '@Url.Action("PersonelAra", "Aktarma")',
+                    type: 'GET',
+                    data: { aramaKriteri: aramaKriteri },
+                    success: function (data) {
+                        sonuclarDiv.empty();
+                        
+                        if (data.length === 0) {
+                            sonuclarDiv.html('<div class="alert alert-warning">Sonuç bulunamadı.</div>');
+                            return;
+                        }
+                        
+                        data.forEach(function (personel) {
+                            const sicilNo = personel.sicilNo ? personel.sicilNo : 'Belirtilmemiş';
+                            const departman = personel.departman ? personel.departman : 'Belirtilmemiş';
+                            
+                            const personelItem = $(`
+                                <a href="#" class="list-group-item list-group-item-action personel-item" 
+                                   data-id="${personel.id}" 
+                                   data-adsoyad="${personel.adSoyad}" 
+                                   data-sicilno="${sicilNo}" 
+                                   data-departman="${departman}"
+                                   data-tip="${tip}">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">${personel.adSoyad}</h6>
+                                        <small>${sicilNo}</small>
+                                    </div>
+                                    <small>${departman}</small>
+                                </a>
+                            `);
+                            
+                            sonuclarDiv.append(personelItem);
+                        });
+                    },
+                    error: function () {
+                        sonuclarDiv.html('<div class="alert alert-danger">Arama sırasında bir hata oluştu.</div>');
+                    }
+                });
+            }
+            
+            // Personel seçme işlemi
+            $(document).on('click', '.personel-item', function (e) {
+                e.preventDefault();
+                
+                const personelId = $(this).data('id');
+                const personelAdSoyad = $(this).data('adsoyad');
+                const personelSicilNo = $(this).data('sicilno');
+                const personelDepartman = $(this).data('departman');
+                const tip = $(this).data('tip');
+                
+                if (tip === 'kaynak') {
+                    $('#kaynakPersonelId').val(personelId);
+                    $('#kaynakPersonelAdSoyad').text(personelAdSoyad);
+                    $('#kaynakPersonelSicilNo').text(personelSicilNo);
+                    $('#kaynakPersonelDepartman').text(personelDepartman);
+                    $('#kaynakPersonelBilgi').removeClass('d-none');
+                    $('#kaynakPersonelSonuclar').empty();
+                    
+                    // Demirbaşları getir
+                    demirbaslariGetir(personelId);
+                } else {
+                    $('#hedefPersonelId').val(personelId);
+                    $('#hedefPersonelAdSoyad').text(personelAdSoyad);
+                    $('#hedefPersonelSicilNo').text(personelSicilNo);
+                    $('#hedefPersonelDepartman').text(personelDepartman);
+                    $('#hedefPersonelBilgi').removeClass('d-none');
+                    $('#hedefPersonelSonuclar').empty();
+                }
+                
+                // Aktarma butonunu kontrol et
+                aktarmaButonuKontrol();
+            });
+            
+            // Demirbaşları getirme
+            function demirbaslariGetir(personelId) {
+                $('#demirbasYukleniyor').removeClass('d-none');
+                $('#demirbasYok').addClass('d-none');
+                $('#demirbasTabloContainer').addClass('d-none');
+                
+                $.ajax({
+                    url: '@Url.Action("PersonelDemirbaslar", "Aktarma")',
+                    type: 'GET',
+                    data: { personelId: personelId },
+                    success: function (data) {
+                        $('#demirbasYukleniyor').addClass('d-none');
+                        
+                        if (data.length === 0) {
+                            $('#demirbasYok').removeClass('d-none');
+                            return;
+                        }
+                        
+                        const demirbasListesi = $('#demirbasListesi');
+                        demirbasListesi.empty();
+                        
+                        data.forEach(function (demirbas) {
+                            const row = $(`
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input demirbas-checkbox" type="checkbox" 
+                                                   name="seciliDemirbaslar" value="${demirbas.demirbasId}">
+                                        </div>
+                                    </td>
+                                    <td>${demirbas.demirbasKodu}</td>
+                                    <td>${demirbas.demirbasAdi}</td>
+                                    <td>${demirbas.marka}</td>
+                                    <td>${demirbas.model || '-'}</td>
+                                    <td>${demirbas.zimmetTarihi}</td>
+                                </tr>
+                            `);
+                            
+                            demirbasListesi.append(row);
+                        });
+                        
+                        $('#demirbasTabloContainer').removeClass('d-none');
+                    },
+                    error: function () {
+                        $('#demirbasYukleniyor').addClass('d-none');
+                        $('#demirbasYok').removeClass('d-none').text('Demirbaşlar yüklenirken bir hata oluştu.');
+                    }
+                });
+            }
+            
+            // Tümünü seç/kaldır
+            $('#tumunuSec').change(function () {
+                $('.demirbas-checkbox').prop('checked', $(this).is(':checked'));
+                aktarmaButonuKontrol();
+            });
+            
+            // Checkbox değişikliğinde buton kontrolü
+            $(document).on('change', '.demirbas-checkbox', function () {
+                aktarmaButonuKontrol();
+            });
+            
+            // Aktarma butonunu kontrol et
+            function aktarmaButonuKontrol() {
+                const kaynakSecili = $('#kaynakPersonelId').val() !== '';
+                const hedefSecili = $('#hedefPersonelId').val() !== '';
+                const demirbasSecili = $('.demirbas-checkbox:checked').length > 0;
+                
+                $('#aktarmaOnay').prop('disabled', !(kaynakSecili && hedefSecili && demirbasSecili));
+            }
+            
+            // Arama butonları
+            $('#kaynakPersonelAraBtn').click(function () {
+                personelAra($('#kaynakPersonelArama').val(), 'kaynak');
+            });
+            
+            $('#hedefPersonelAraBtn').click(function () {
+                personelAra($('#hedefPersonelArama').val(), 'hedef');
+            });
+            
+            // Enter tuşu ile arama
+            $('#kaynakPersonelArama').keypress(function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    personelAra($(this).val(), 'kaynak');
+                }
+            });
+            
+            $('#hedefPersonelArama').keypress(function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    personelAra($(this).val(), 'hedef');
+                }
+            });
+            
+            // İptal butonu
+            $('#aktarmaIptal').click(function () {
+                window.location.reload();
+            });
+            
+            // Form gönderilmeden önce kontrol
+            $('#aktarmaForm').submit(function (e) {
+                const kaynakId = $('#kaynakPersonelId').val();
+                const hedefId = $('#hedefPersonelId').val();
+                const seciliDemirbaslar = $('.demirbas-checkbox:checked').length;
+                
+                if (!kaynakId || !hedefId || seciliDemirbaslar === 0) {
+                    e.preventDefault();
+                    alert('Lütfen kaynak personel, hedef personel ve en az bir demirbaş seçin.');
+                    return false;
+                }
+                
+                if (kaynakId === hedefId) {
+                    e.preventDefault();
+                    alert('Kaynak ve hedef personel aynı olamaz.');
+                    return false;
+                }
+                
+                return true;
+            });
+        });
+    </script>
+}

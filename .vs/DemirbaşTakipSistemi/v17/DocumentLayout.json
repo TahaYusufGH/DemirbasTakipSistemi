@@ -1,0 +1,214 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\models\\demirbas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\models\\demirbas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\models\\oda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\models\\oda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\controllers\\demirbascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\controllers\\demirbascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\migrations\\20250804131705_taha1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\migrations\\20250804131705_taha1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\controllers\\depocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\controllers\\depocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\views\\demirbas\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\views\\demirbas\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\views\\report\\deporaporu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\views\\report\\deporaporu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\migrations\\20250804131444_taha.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\migrations\\20250804131444_taha.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|c:\\users\\taha yusuf\\source\\repos\\demirba\u015Ftakipsistemi\\demirba\u015Ftakipsistemi\\migrations\\20250804125032_inits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A5DDFB8-5BDA-4A56-8903-8450E830FD9D}|Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi.csproj|solutionrelative:demirba\u015Ftakipsistemi\\migrations\\20250804125032_inits.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Demirbas.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Models\\Demirbas.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Models\\Demirbas.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Models\\Demirbas.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Models\\Demirbas.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T11:08:32.435Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DemirbasController.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Controllers\\DemirbasController.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Controllers\\DemirbasController.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Controllers\\DemirbasController.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Controllers\\DemirbasController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T11:08:07.085Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "20250804131705_Taha1.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804131705_Taha1.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Migrations\\20250804131705_Taha1.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804131705_Taha1.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Migrations\\20250804131705_Taha1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:17:05.256Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20250804131444_Taha.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804131444_Taha.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Migrations\\20250804131444_Taha.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804131444_Taha.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Migrations\\20250804131444_Taha.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T13:14:44.796Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "20250804125032_inits.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804125032_inits.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Migrations\\20250804125032_inits.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Migrations\\20250804125032_inits.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Migrations\\20250804125032_inits.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-04T12:50:32.256Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DepoController.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Controllers\\DepoController.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Controllers\\DepoController.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Controllers\\DepoController.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Controllers\\DepoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-30T08:41:35.452Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Demirbas\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Views\\Demirbas\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Demirbas\\Edit.cshtml",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Views\\Demirbas\\Edit.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAIAwwCIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-20T15:45:20.378Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAALoAAAAAAAAAAAAAAM0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-18T22:20:07.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DepoRaporu.cshtml",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Report\\DepoRaporu.cshtml",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Views\\Report\\DepoRaporu.cshtml",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Views\\Report\\DepoRaporu.cshtml",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Views\\Report\\DepoRaporu.cshtml",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAWwB8AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-18T21:10:26.106Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\appsettings.json",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\appsettings.json",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\appsettings.json",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-15T20:03:39.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Oda.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Models\\Oda.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Models\\Oda.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Models\\Oda.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Models\\Oda.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T11:08:19.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Program.cs",
+              "RelativeDocumentMoniker": "Demirba\u015FTakipSistemi\\Program.cs",
+              "ToolTip": "C:\\Users\\Taha Yusuf\\source\\repos\\Demirba\u015FTakipSistemi\\Demirba\u015FTakipSistemi\\Program.cs",
+              "RelativeToolTip": "Demirba\u015FTakipSistemi\\Program.cs",
+              "ViewState": "AgIAAOwAAAAAAAAAAAAAwNAAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T20:07:54.362Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

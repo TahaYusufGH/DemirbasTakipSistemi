@@ -1,0 +1,120 @@
+@model DemirbaşTakipSistemi.Models.Zimmet
+@{
+    ViewData["Title"] = "Zimmet Ata";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div class="page-header">
+        <h1 class="h3 mb-4 text-primary">
+            <i class="fas fa-clipboard-list me-2"></i>Yeni Zimmet Oluştur
+        </h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Zimmet Bilgileri</h6>
+            <span class="badge bg-info">
+                <i class="fas fa-info-circle me-1"></i>Tüm alanları doldurunuz
+            </span>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="slide-in">
+                <div asp-validation-summary="ModelOnly" class="text-danger alert alert-danger p-2" role="alert"></div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="DemirbasId" class="form-label">
+                                <i class="fas fa-laptop me-1"></i>Demirbaş
+                            </label>
+                            <select asp-for="DemirbasId" asp-items="ViewBag.Demirbaslar" class="form-select select2">
+                                <option value="">-- Demirbaş Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="DemirbasId" class="text-danger small"></span>
+                            <div class="form-text text-muted">Zimmetlenecek demirbaşı seçiniz</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="PersonelId" class="form-label">
+                                <i class="fas fa-user me-1"></i>Zimmetlenecek Personel
+                            </label>
+                            <select asp-for="PersonelId" asp-items="ViewBag.Personeller" class="form-select select2">
+                                <option value="">-- Personel Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="PersonelId" class="text-danger small"></span>
+                            <div class="form-text text-muted">Demirbaşın zimmetleneceği personeli seçiniz</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="TeslimEdenId" class="form-label">
+                                <i class="fas fa-user-check me-1"></i>Teslim Eden
+                            </label>
+                            <select asp-for="TeslimEdenId" asp-items="ViewBag.TeslimEdenler" class="form-select select2">
+                                <option value="">-- Teslim Eden Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="TeslimEdenId" class="text-danger small"></span>
+                            <div class="form-text text-muted">Demirbaşı teslim eden yetkiliyi seçiniz</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Aciklama" class="form-label">
+                                <i class="fas fa-comment-alt me-1"></i>Açıklama
+                            </label>
+                            <textarea asp-for="Aciklama" class="form-control" rows="3" 
+                                      placeholder="Zimmet ile ilgili açıklama giriniz..."></textarea>
+                            <span asp-validation-for="Aciklama" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4 d-flex justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Zimmetle
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary ms-2">
+                            <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                        </a>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="fas fa-undo me-1"></i> Formu Temizle
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Select2 kullanarak dropdown'ları geliştir
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: 'Seçim yapınız...'
+            });
+            
+            // Form submit animasyonu
+            $('form').on('submit', function() {
+                Swal.fire({
+                    title: 'İşleniyor...',
+                    text: 'Zimmet oluşturuluyor, lütfen bekleyiniz.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        });
+    </script>
+} 

@@ -1,0 +1,595 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Yönetici Paneli";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<style>
+    /* Yönetici Paneli Özel Stilleri */
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-bottom: 1.5rem;
+        opacity: 0; /* Başlangıçta gizli */
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .border-left-primary, .border-left-success, .border-left-warning, .border-left-danger {
+        border-left-width: 5px;
+        border-left-style: solid;
+    }
+    
+    .card-header {
+        font-weight: 600;
+    }
+    
+    .text-xs {
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .progress {
+        height: 10px;
+        border-radius: 5px;
+    }
+    
+    .progress-bar {
+        border-radius: 5px;
+    }
+    
+    .table th {
+        font-weight: 600;
+        background-color: #f8f9fc;
+    }
+    
+    .badge {
+        padding: 0.4rem 0.6rem;
+        font-weight: 500;
+    }
+    
+    .btn-sm {
+        border-radius: 20px;
+        padding: 0.25rem 0.8rem;
+    }
+    
+    .h5 {
+        font-weight: 700;
+    }
+    
+    .text-gray-800 {
+        color: #2d3748 !important;
+    }
+    
+    .text-gray-300 {
+        color: #cbd5e0 !important;
+    }
+    
+    .font-weight-bold {
+        font-weight: 700 !important;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.3em 0.8em;
+        border-radius: 5px;
+        margin: 0 2px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--primary-color);
+        color: white !important;
+        border: none;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: var(--secondary-color);
+        color: white !important;
+        border: none;
+    }
+    
+    .table-responsive {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    /* Ek Stiller */
+    .btn-block {
+        padding: 1rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+        font-size: 0.9rem;
+    }
+    
+    .btn-block i {
+        transition: all 0.3s;
+    }
+    
+    .btn-block:hover i {
+        transform: scale(1.2);
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .h3 {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #eaecf4;
+        padding-bottom: 0.8rem;
+    }
+    
+    .table-bordered {
+        border: none;
+    }
+    
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #e3e6f0;
+    }
+    
+    .table-bordered thead th {
+        border-bottom-width: 1px;
+    }
+    
+    .col-auto i {
+        background: rgba(0, 0, 0, 0.03);
+        padding: 15px;
+        border-radius: 50%;
+        transition: all 0.3s;
+    }
+    
+    .card:hover .col-auto i {
+        transform: rotate(15deg);
+    }
+</style>
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">İstanbul Adalet Sarayı Yönetici Paneli</h1>
+
+    <!-- İstatistik Kartları Satırı -->
+    <div class="row">
+        <!-- Toplam Demirbaş Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Toplam Demirbaş</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ToplamDemirbasSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-boxes fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zimmetli Demirbaş Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Zimmetli</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ZimmetliDemirbasSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-check fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arızalı Demirbaş Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Arızalı</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ArizaliDemirbasSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bakımdaki Demirbaş Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Bakımda</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.BakimdakiDemirbasSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tools fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- İstatistik Kartları Satırı 2 -->
+    <div class="row">
+        <!-- Arıza İstatistikleri Kartı -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Arıza İstatistikleri</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">Bekleyen <span class="float-right">@Model.BekleyenArizaSayisi</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.BekleyenArizaSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-warning">@Model.BekleyenArizaSayisi</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">İncelenen <span class="float-right">@Model.IncelenenArizaSayisi</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: @(Model.IncelenenArizaSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-primary">@Model.IncelenenArizaSayisi</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">Çözülen <span class="float-right">@Model.CozulenArizaSayisi</span></h4>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @(Model.CozulenArizaSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-success">@Model.CozulenArizaSayisi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Depo İşlem İstatistikleri Kartı -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Depo İşlem İstatistikleri</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">Bekleyen <span class="float-right">@Model.BekleyenDepoIslemSayisi</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.BekleyenDepoIslemSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-warning">@Model.BekleyenDepoIslemSayisi</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">Onaylanan <span class="float-right">@Model.OnaylananDepoIslemSayisi</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @(Model.OnaylananDepoIslemSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-success">@Model.OnaylananDepoIslemSayisi</span>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h4 class="small font-weight-bold">Reddedilen <span class="float-right">@Model.ReddedilenDepoIslemSayisi</span></h4>
+                            <div class="progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: @(Model.ReddedilenDepoIslemSayisi > 0 ? 100 : 0)%"></div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge badge-danger">@Model.ReddedilenDepoIslemSayisi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stok Uyarıları Kartı -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Stok Uyarıları</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.MinimumStokAltindakiMalzemeler.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Malzeme</th>
+                                        <th>Stok</th>
+                                        <th>Min</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var malzeme in Model.MinimumStokAltindakiMalzemeler)
+                                    {
+                                        <tr class="@(malzeme.MevcutStok == 0 ? "table-danger" : "table-warning")">
+                                            <td>@malzeme.Ad</td>
+                                            <td>@malzeme.MevcutStok @malzeme.Birim</td>
+                                            <td>@malzeme.MinimumStok</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success mb-0">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Tüm malzemelerin stok seviyeleri yeterli.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Son Arızalar Tablosu -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Son Arızalar</h6>
+                    <a href="@Url.Action("Index", "Ariza")" class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> Tümünü Gör
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.SonArizalar.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="arizaTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Demirbaş</th>
+                                        <th>Bildiren</th>
+                                        <th>Tarih</th>
+                                        <th>Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ariza in Model.SonArizalar)
+                                    {
+                                        <tr>
+                                            <td>@ariza.Demirbas.Ad</td>
+                                            <td>@ariza.Bildiren.AdSoyad</td>
+                                            <td>@ariza.ArizaTarihi.ToString("dd.MM.yyyy")</td>
+                                            <td>
+                                                @{
+                                                    var badgeClass = ariza.Durum switch
+                                                    {
+                                                        "Beklemede" => "badge-warning",
+                                                        "İncelemede" => "badge-primary",
+                                                        "Çözüldü" => "badge-success",
+                                                        "İptal" => "badge-secondary",
+                                                        _ => "badge-primary"
+                                                    };
+                                                }
+                                                <span class="badge @badgeClass">@ariza.Durum</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <div class="text-muted">Henüz arıza kaydı bulunmuyor</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Son Depo İşlemleri Tablosu -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Son Depo İşlemleri</h6>
+                    <a href="@Url.Action("Index", "DepoIslem")" class="btn btn-sm btn-primary">
+                        <i class="fas fa-arrow-right"></i> Tümünü Gör
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.SonDepoIslemleri.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="depoTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Malzeme</th>
+                                        <th>İşlem</th>
+                                        <th>Miktar</th>
+                                        <th>Tarih</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var islem in Model.SonDepoIslemleri)
+                                    {
+                                        <tr>
+                                            <td>@islem.SarfMalzeme.Ad</td>
+                                            <td>
+                                                @{
+                                                    var badgeClass = islem.IslemTipi switch
+                                                    {
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Giris => "badge-success",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Cikis => "badge-danger",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Transfer => "badge-info",
+                                                        DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Iade => "badge-warning",
+                                                        _ => "badge-primary"
+                                                    };
+                                                }
+                                                <span class="badge @badgeClass">@islem.IslemTipi</span>
+                                            </td>
+                                            <td>@islem.Miktar @islem.SarfMalzeme.Birim</td>
+                                            <td>@islem.IslemTarihi.ToString("dd.MM.yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <div class="text-muted">Henüz depo işlemi bulunmuyor</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı Erişim Butonları -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Hızlı Erişim</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <a href="@Url.Action("Create", "Demirbas")" class="btn btn-primary btn-block shadow-sm">
+                                <i class="fas fa-laptop fa-lg me-2"></i> 
+                                <span class="font-weight-bold">Yeni Demirbaş Ekle</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="@Url.Action("Create", "Zimmet")" class="btn btn-success btn-block shadow-sm">
+                                <i class="fas fa-clipboard-list fa-lg me-2"></i> 
+                                <span class="font-weight-bold">Zimmet Oluştur</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="@Url.Action("Create", "DepoIslem")" class="btn btn-info btn-block shadow-sm">
+                                <i class="fas fa-boxes fa-lg me-2"></i> 
+                                <span class="font-weight-bold">Depo İşlemi</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Sayfa yüklendiğinde animasyon efekti
+            $('.card').each(function(i) {
+                $(this).delay(i * 100).animate({'opacity': 1}, 500);
+            });
+            
+            // DataTables - Arıza Tablosu
+            $('#arizaTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "pageLength": 5,
+                "ordering": true,
+                "order": [[2, 'desc']], // Tarihe göre sırala
+                "info": false,
+                "searching": false,
+                "paging": true,
+                "lengthChange": false,
+                "responsive": true,
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "30%", "targets": 0 },
+                    { "width": "25%", "targets": 1 },
+                    { "width": "20%", "targets": 2 },
+                    { "width": "15%", "targets": 3, "className": "text-center" }
+                ]
+            });
+            
+            // DataTables - Depo İşlemleri Tablosu
+            $('#depoTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "pageLength": 5,
+                "ordering": true,
+                "order": [[3, 'desc']], // Tarihe göre sırala
+                "info": false,
+                "searching": false,
+                "paging": true,
+                "lengthChange": false,
+                "responsive": true,
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "30%", "targets": 0 },
+                    { "width": "20%", "targets": 1, "className": "text-center" },
+                    { "width": "20%", "targets": 2 },
+                    { "width": "20%", "targets": 3 }
+                ]
+            });
+            
+            // İstatistik kartları için sayaç animasyonu
+            $('.h5.mb-0.font-weight-bold').each(function() {
+                var $this = $(this);
+                var countTo = parseInt($this.text());
+                
+                $({ countNum: 0 }).animate({
+                    countNum: countTo
+                }, {
+                    duration: 1000,
+                    easing: 'swing',
+                    step: function() {
+                        $this.text(Math.floor(this.countNum));
+                    },
+                    complete: function() {
+                        $this.text(this.countNum);
+                    }
+                });
+            });
+            
+            // Hızlı erişim butonları için hover efekti
+            $('.btn-block').hover(
+                function() {
+                    $(this).addClass('shadow-lg').css('transform', 'translateY(-3px)');
+                },
+                function() {
+                    $(this).removeClass('shadow-lg').css('transform', '');
+                }
+            );
+        });
+    </script>
+} 

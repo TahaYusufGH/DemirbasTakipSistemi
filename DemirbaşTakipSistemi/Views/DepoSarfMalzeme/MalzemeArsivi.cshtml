@@ -1,0 +1,184 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.SarfMalzemeArsivViewModel
+
+@{
+    ViewData["Title"] = "Sarf Malzeme Arşivi";
+}
+
+<div class="container-fluid">
+    <h2>Sarf Malzeme Arşivi</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Sarf Malzeme Listesine Dön
+                </a>
+                <a asp-action="MalzemeVer" class="btn btn-success">
+                    <i class="fas fa-share-square"></i> Sarf Malzeme Ver
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-search me-1"></i>
+            Arşiv Arama
+        </div>
+        <div class="card-body">
+            <form asp-action="MalzemeArsivi" method="get" class="mb-4">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="baslangicTarihi" class="form-label">Başlangıç Tarihi</label>
+                            <input type="date" name="baslangicTarihi" id="baslangicTarihi" class="form-control" value="@(Model.BaslangicTarihi?.ToString("yyyy-MM-dd"))" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="bitisTarihi" class="form-label">Bitiş Tarihi</label>
+                            <input type="date" name="bitisTarihi" id="bitisTarihi" class="form-control" value="@(Model.BitisTarihi?.ToString("yyyy-MM-dd"))" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="personelId" class="form-label">Personel</label>
+                            <select name="personelId" id="personelId" class="form-control select2">
+                                <option value="">-- Tüm Personeller --</option>
+                                @foreach (var personel in Model.Personeller)
+                                {
+                                    @if (Model.SecilenPersonelId == personel.Id)
+                                    {
+                                        <option value="@personel.Id" selected>@personel.AdSoyad (@(personel.SicilNo ?? "Sicil No Yok"))</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@personel.Id">@personel.AdSoyad (@(personel.SicilNo ?? "Sicil No Yok"))</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="sarfMalzemeId" class="form-label">Malzeme</label>
+                            <select name="sarfMalzemeId" id="sarfMalzemeId" class="form-control select2">
+                                <option value="">-- Tüm Malzemeler --</option>
+                                @foreach (var kategori in Model.SarfMalzemeler.Select(s => s.Kategori).Distinct())
+                                {
+                                    <optgroup label="@kategori">
+                                        @foreach (var malzeme in Model.SarfMalzemeler.Where(s => s.Kategori == kategori))
+                                        {
+                                            @if (Model.SecilenSarfMalzemeId == malzeme.Id)
+                                            {
+                                                <option value="@malzeme.Id" selected>@malzeme.Ad</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@malzeme.Id">@malzeme.Ad</option>
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Ara
+                        </button>
+                        <a asp-action="MalzemeArsivi" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Temizle
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-archive me-1"></i>
+            Verilen Sarf Malzemeler
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="arsivTable">
+                    <thead>
+                        <tr>
+                            <th>İşlem Tarihi</th>
+                            <th>Malzeme</th>
+                            <th>Miktar</th>
+                            <th>Personel Sicili</th>
+                            <th>Personel Adı Soyadı</th>
+                            <th>Birimi</th>
+                            <th>Oda</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var islem in Model.DepoIslemler)
+                        {
+                            <tr>
+                                <td>@islem.IslemTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@islem.SarfMalzeme.Ad</td>
+                                <td>@islem.Miktar @islem.SarfMalzeme.Birim</td>
+                                <td>@(islem.TalepEden?.SicilNo ?? "-")</td>
+                                <td>@(islem.TalepEden?.AdSoyad ?? "-")</td>
+                                <td>@(islem.TalepEden?.Departman ?? "-")</td>
+                                <td>
+                                    @{
+                                        string odaBilgisi = "-";
+                                        if (islem.Aciklama != null && islem.Aciklama.Contains("(Oda:"))
+                                        {
+                                            var baslangic = islem.Aciklama.IndexOf("(Oda:");
+                                            var bitis = islem.Aciklama.IndexOf(")", baslangic);
+                                            if (baslangic >= 0 && bitis > baslangic)
+                                            {
+                                                odaBilgisi = islem.Aciklama.Substring(baslangic + 6, bitis - baslangic - 6).Trim();
+                                            }
+                                        }
+                                    }
+                                    @odaBilgisi
+                                </td>
+                                <td>
+                                    @{
+                                        string aciklama = islem.Aciklama ?? "";
+                                        if (aciklama.Contains("(Oda:"))
+                                        {
+                                            var baslangic = aciklama.IndexOf("(Oda:");
+                                            if (baslangic >= 0)
+                                            {
+                                                aciklama = aciklama.Substring(0, baslangic).Trim();
+                                            }
+                                        }
+                                    }
+                                    @aciklama
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%'
+            });
+
+            $('#arsivTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+                },
+                order: [[0, 'desc']]
+            });
+        });
+    </script>
+}

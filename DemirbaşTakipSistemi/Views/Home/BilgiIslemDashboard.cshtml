@@ -1,0 +1,331 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.BilgiIslemDashboardViewModel
+@{
+    ViewData["Title"] = "Bilgi İşlem Paneli";
+}
+
+<div class="container-fluid mt-4">
+    <h1 class="h3 mb-4 text-gray-800">İstanbul Adalet Sarayı Bilgi İşlem Paneli</h1>
+
+    <!-- İstatistik Kartları -->
+    <div class="row">
+        <!-- Bekleyen Arıza Sayısı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Bekleyen Arıza</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.BekleyenArizaSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- İncelenen Arıza Sayısı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                İncelenen Arıza</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.IncelenenArizaSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tools fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Çözülen Arıza Sayısı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Çözülen Arıza</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.CozulenArizaSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arızalı Demirbaş Sayısı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Arızalı Demirbaş</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ArizaliDemirbasSayisi</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-laptop-medical fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Bekleyen Arızalar -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Bekleyen Arızalar</h6>
+                    <a href="@Url.Action("Index", "Ariza")" class="btn btn-sm btn-primary">Tümünü Gör</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.BekleyenArizalar.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Demirbaş</th>
+                                        <th>Bildiren</th>
+                                        <th>Tarih</th>
+                                        <th>Durum</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ariza in Model.BekleyenArizalar)
+                                    {
+                                        <tr>
+                                            <td>@ariza.Demirbas.Ad</td>
+                                            <td>@ariza.Bildiren.AdSoyad</td>
+                                            <td>@ariza.ArizaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>
+                                                @if (ariza.Durum == "Beklemede")
+                                                {
+                                                    <span class="badge badge-warning">Beklemede</span>
+                                                }
+                                                else if (ariza.Durum == "İncelemede")
+                                                {
+                                                    <span class="badge badge-primary">İncelemede</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Edit", "Ariza", new { id = ariza.Id })" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">Bekleyen arıza bulunmamaktadır.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Bakım Gerektiren Demirbaşlar -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Yaklaşan Bakımlar</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.BakimGerekenDemirbaslar.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Demirbaş</th>
+                                        <th>Son Bakım</th>
+                                        <th>Sonraki Bakım</th>
+                                        <th>Kalan Gün</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var bakim in Model.BakimGerekenDemirbaslar)
+                                    {
+                                        var kalanGun = (bakim.SonrakiBakimTarihi.Value - DateTime.Now).Days;
+                                        var kalanGunClass = kalanGun <= 7 ? "text-danger" : (kalanGun <= 15 ? "text-warning" : "");
+                                        
+                                        <tr>
+                                            <td>@bakim.Demirbas.Ad</td>
+                                            <td>@bakim.BakimTarihi.ToString("dd.MM.yyyy")</td>
+                                            <td>@bakim.SonrakiBakimTarihi?.ToString("dd.MM.yyyy")</td>
+                                            <td class="@kalanGunClass">@kalanGun gün</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">30 gün içinde bakım gerektiren demirbaş bulunmamaktadır.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Minimum Stok Altındaki Malzemeler -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Minimum Stok Altındaki Malzemeler</h6>
+                    <a href="@Url.Action("Index", "SarfMalzeme")" class="btn btn-sm btn-primary">Tümünü Gör</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.MinimumStokAltindakiMalzemeler.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Malzeme</th>
+                                        <th>Kategori</th>
+                                        <th>Mevcut Stok</th>
+                                        <th>Minimum Stok</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var malzeme in Model.MinimumStokAltindakiMalzemeler)
+                                    {
+                                        <tr class="@(malzeme.MevcutStok == 0 ? "table-danger" : "table-warning")">
+                                            <td>@malzeme.Ad</td>
+                                            <td>@malzeme.Kategori</td>
+                                            <td>@malzeme.MevcutStok @malzeme.Birim</td>
+                                            <td>@malzeme.MinimumStok @malzeme.Birim</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">Minimum stok altında malzeme bulunmamaktadır.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Son Çözülen Arızalar -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Son Çözülen Arızalar</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.SonCozulenArizalar.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Demirbaş</th>
+                                        <th>Çözen</th>
+                                        <th>Çözüm Tarihi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ariza in Model.SonCozulenArizalar)
+                                    {
+                                        <tr>
+                                            <td>@ariza.Demirbas.Ad</td>
+                                            <td>@ariza.CozenPersonel?.AdSoyad</td>
+                                            <td>@ariza.CozumTarihi?.ToString("dd.MM.yyyy HH:mm")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">Çözülen arıza bulunmamaktadır.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı Erişim Butonları -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Hızlı Erişim</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Index", "Ariza")" class="btn btn-primary btn-block">
+                                <i class="fas fa-tools mr-2"></i> Arıza Yönetimi
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Index", "Report")" class="btn btn-success btn-block">
+                                <i class="fas fa-file-alt mr-2"></i> Raporlar
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Index", "Demirbas")" class="btn btn-info btn-block">
+                                <i class="fas fa-laptop mr-2"></i> Demirbaş Yönetimi
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Index", "SarfMalzeme")" class="btn btn-warning btn-block">
+                                <i class="fas fa-boxes mr-2"></i> Sarf Malzeme Yönetimi
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Tablolar için DataTables eklentisini aktifleştir
+            $('.table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "pageLength": 5,
+                "ordering": true,
+                "info": false,
+                "searching": false,
+                "paging": true,
+                "lengthChange": false
+            });
+        });
+    </script>
+} 

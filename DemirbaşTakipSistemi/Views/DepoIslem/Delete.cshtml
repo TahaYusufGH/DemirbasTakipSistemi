@@ -1,0 +1,81 @@
+@model DemirbaşTakipSistemi.Models.DepoIslem
+
+@{
+    ViewData["Title"] = "Depo İşlemi Sil";
+}
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0"><i class="fas fa-trash-alt me-2"></i> @ViewData["Title"]</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i> <strong>Uyarı:</strong> Bu depo işlemini silmek istediğinizden emin misiniz?
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-3">İşlem Bilgileri</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Malzeme</dt>
+                        <dd class="col-sm-8">@Model.SarfMalzeme.Ad</dd>
+
+                        <dt class="col-sm-4">İşlem Tipi</dt>
+                        <dd class="col-sm-8">
+                            @{
+                                var badgeClass = Model.IslemTipi switch
+                                {
+                                    DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Giris => "bg-success",
+                                    DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Cikis => "bg-danger",
+                                    DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Transfer => "bg-info",
+                                    DemirbaşTakipSistemi.Models.Enums.DepoIslemTip.Iade => "bg-warning",
+                                    _ => "bg-primary"
+                                };
+                            }
+                            <span class="badge @badgeClass">@Model.IslemTipi</span>
+                        </dd>
+
+                        <dt class="col-sm-4">İşlem Tarihi</dt>
+                        <dd class="col-sm-8">@Model.IslemTarihi.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Miktar</dt>
+                        <dd class="col-sm-8">@Model.Miktar @Model.SarfMalzeme.Birim</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">Diğer Bilgiler</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">İşlemi Yapan</dt>
+                        <dd class="col-sm-8">@($"{Model.IslemYapan.Ad} {Model.IslemYapan.Soyad}")</dd>
+
+                        <dt class="col-sm-4">Talep Eden</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.TalepEden != null)
+                            {
+                                @($"{Model.TalepEden.Ad} {Model.TalepEden.Soyad}")
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Açıklama</dt>
+                        <dd class="col-sm-8">@(Model.Aciklama ?? "-")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                </a>
+            </form>
+        </div>
+    </div>
+</div> 

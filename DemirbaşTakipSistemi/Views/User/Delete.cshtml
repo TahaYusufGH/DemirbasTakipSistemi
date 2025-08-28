@@ -1,0 +1,63 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Sil";
+}
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3><i class="bi bi-trash"></i> Kullanıcı Silme</h3>
+            <a asp-action="Index" class="btn btn-light">
+                <i class="bi bi-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i> <strong>Uyarı:</strong> Bu kullanıcıyı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Email)</label>
+                    <div class="form-control-plaintext">@Html.DisplayFor(model => model.Email)</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Roller)</label>
+                    <div class="form-control-plaintext">@Html.DisplayFor(model => model.Roller)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Ad)</label>
+                    <div class="form-control-plaintext">@Html.DisplayFor(model => model.Ad)</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">@Html.DisplayNameFor(model => model.Soyad)</label>
+                    <div class="form-control-plaintext">@Html.DisplayFor(model => model.Soyad)</div>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Kullanıcıyı Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-x"></i> İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div> 

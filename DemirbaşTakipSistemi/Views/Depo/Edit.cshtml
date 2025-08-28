@@ -1,0 +1,176 @@
+@model DemirbaşTakipSistemi.Models.Demirbas
+
+@{
+    ViewData["Title"] = "Demirbaş Düzenle";
+}
+
+<div class="container-fluid">
+    <h2>Demirbaş Düzenle</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-edit me-1"></i>
+                    Demirbaş Bilgileri
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DemirbasKodu" class="control-label"></label>
+                                    <input asp-for="DemirbasKodu" class="form-control" readonly />
+                                    <span asp-validation-for="DemirbasKodu" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="SeriNo" class="control-label"></label>
+                                    <input asp-for="SeriNo" class="form-control" />
+                                    <span asp-validation-for="SeriNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Ad" class="control-label"></label>
+                                    <input asp-for="Ad" class="form-control" />
+                                    <span asp-validation-for="Ad" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Kategori" class="control-label"></label>
+                                    <input asp-for="Kategori" class="form-control" />
+                                    <span asp-validation-for="Kategori" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Model" class="control-label"></label>
+                                    <input asp-for="Model" class="form-control" />
+                                    <span asp-validation-for="Model" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Marka" class="control-label"></label>
+                                    <input asp-for="Marka" class="form-control" />
+                                    <span asp-validation-for="Marka" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Durum" class="control-label"></label>
+                                    <select asp-for="Durum" class="form-control" asp-items="ViewBag.Durumlar"></select>
+                                    <span asp-validation-for="Durum" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="OdaId" class="control-label">Oda</label>
+                                    <select asp-for="OdaId" class="form-control" asp-items="ViewBag.OdaId">
+                                        <option value="">-- Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="OdaId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="AlimTarihi" class="control-label"></label>
+                                    <input asp-for="AlimTarihi" class="form-control" type="date" />
+                                    <span asp-validation-for="AlimTarihi" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Aciklama" class="control-label"></label>
+                            <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Aciklama" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Listeye Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-history me-1"></i>
+                    Demirbaş Geçmişi
+                </div>
+                <div class="card-body">
+                    <h5>Zimmet Geçmişi</h5>
+                    <ul class="list-group mb-3">
+                        @if (Model.Zimmetler != null && Model.Zimmetler.Any())
+                        {
+                            @foreach (var zimmet in Model.Zimmetler.OrderByDescending(z => z.ZimmetTarihi))
+                            {
+                                <li class="list-group-item">
+                                    <div><strong>Personel:</strong> @zimmet.Personel.AdSoyad</div>
+                                    <div><strong>Zimmet Tarihi:</strong> @zimmet.ZimmetTarihi.ToShortDateString()</div>
+                                    @if (zimmet.IadeTarihi.HasValue)
+                                    {
+                                        <div><strong>İade Tarihi:</strong> @zimmet.IadeTarihi.Value.ToShortDateString()</div>
+                                    }
+                                    <div><strong>Durum:</strong> @(zimmet.IsAktif ? "Aktif" : "İade Edildi")</div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Zimmet kaydı bulunamadı.</li>
+                        }
+                    </ul>
+
+                    <h5>Arıza Geçmişi</h5>
+                    <ul class="list-group">
+                        @if (Model.Arizalar != null && Model.Arizalar.Any())
+                        {
+                            @foreach (var ariza in Model.Arizalar.OrderByDescending(a => a.ArizaTarihi))
+                            {
+                                <li class="list-group-item">
+                                    <div><strong>Arıza Tarihi:</strong> @ariza.ArizaTarihi.ToShortDateString()</div>
+                                    <div><strong>Açıklama:</strong> @ariza.Aciklama</div>
+                                    <div><strong>Durum:</strong> @ariza.Durum</div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Arıza kaydı bulunamadı.</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

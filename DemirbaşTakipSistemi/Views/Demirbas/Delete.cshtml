@@ -1,0 +1,67 @@
+@model DemirbaşTakipSistemi.Models.Demirbas
+
+@{
+    ViewData["Title"] = "Demirbaş Sil";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Uyarı!</strong> Bu demirbaşı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-info-circle me-1"></i>
+            Demirbaş Bilgileri
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DemirbasKodu)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DemirbasKodu)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Kategori)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Kategori)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AlimTarihi)</dt>
+                <dd class="col-sm-9">@Model.AlimTarihi.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SeriNo)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SeriNo)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Durum)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Durum)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Oda)</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Oda != null)
+                    {
+                        @($"{Model.Oda.OdaKodu} - {Model.Oda.Ad}")
+                    }
+                    else
+                    {
+                        <span class="text-muted">Atanmamış</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Aciklama)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Aciklama)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash me-1"></i> Sil
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+        </a>
+    </form>
+</div> 

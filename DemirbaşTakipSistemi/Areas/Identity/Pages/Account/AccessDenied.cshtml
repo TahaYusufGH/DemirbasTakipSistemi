@@ -1,0 +1,25 @@
+@page
+@model DemirbaşTakipSistemi.Areas.Identity.Pages.Account.AccessDeniedModel
+@{
+    ViewData["Title"] = "Erişim Reddedildi";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white text-center py-3">
+                <h3><i class="bi bi-exclamation-triangle-fill"></i> Erişim Reddedildi</h3>
+            </div>
+            <div class="card-body p-4 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-lock-fill text-danger" style="font-size: 4rem;"></i>
+                </div>
+                <h5 class="mb-3">Bu sayfaya erişim yetkiniz bulunmamaktadır.</h5>
+                <p>Erişim yetkinizin olduğunu düşünüyorsanız, lütfen sistem yöneticisi ile iletişime geçiniz.</p>
+                <div class="mt-4">
+                    <a class="btn btn-primary" href="/">Ana Sayfaya Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

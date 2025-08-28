@@ -1,0 +1,116 @@
+@model DemirbaşTakipSistemi.Models.Ariza
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Arıza Detayı";
+    var user = await UserManager.GetUserAsync(User);
+    var isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+}
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-info-circle me-2"></i> @ViewData["Title"]</h3>
+            <div>
+                @if (User.IsInRole("Admin") || User.IsInRole("BilgiIslem"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light btn-sm me-1">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </a>
+                }
+                <a asp-action="Index" class="btn btn-light btn-sm">
+                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-3">Arıza Bilgileri</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Demirbaş</dt>
+                        <dd class="col-sm-8">
+                            <strong>@Model.Demirbas.Ad</strong>
+                            <div class="text-muted small">@Model.Demirbas.DemirbasKodu</div>
+                        </dd>
+
+                        <dt class="col-sm-4">Arıza Tarihi</dt>
+                        <dd class="col-sm-8">@Model.ArizaTarihi.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Bildiren</dt>
+                        <dd class="col-sm-8">@($"{Model.Bildiren.Ad} {Model.Bildiren.Soyad}")</dd>
+
+                        <dt class="col-sm-4">Durum</dt>
+                        <dd class="col-sm-8">
+                            @{
+                                var badgeClass = Model.Durum switch
+                                {
+                                    "Beklemede" => "bg-warning",
+                                    "İncelemede" => "bg-info",
+                                    "Çözüldü" => "bg-success",
+                                    "İptal" => "bg-secondary",
+                                    _ => "bg-primary"
+                                };
+                            }
+                            <span class="badge @badgeClass">@Model.Durum</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">Çözüm Bilgileri</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Çözüm Tarihi</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.CozumTarihi.HasValue)
+                            {
+                                @Model.CozumTarihi.Value.ToString("dd.MM.yyyy HH:mm")
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Çözen Personel</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.CozenPersonel != null)
+                            {
+                                @($"{Model.CozenPersonel.Ad} {Model.CozenPersonel.Soyad}")
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h4 class="mb-3">Açıklama</h4>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            @Model.Aciklama
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Cozum))
+            {
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h4 class="mb-3">Çözüm</h4>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                @Model.Cozum
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div> 

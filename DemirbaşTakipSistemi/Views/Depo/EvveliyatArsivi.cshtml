@@ -1,0 +1,238 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.DepoViewModel
+
+@{
+    ViewData["Title"] = "Evveliyat Arşivi";
+}
+
+<div class="container-fluid">
+    <h2>Evveliyat Arşivi</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-search me-1"></i>
+            Evveliyat Arama
+        </div>
+        <div class="card-body">
+            <form asp-action="EvveliyatArsivi" method="get" class="mb-4">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="seriNo" class="control-label">Seri Numarası</label>
+                            <input type="text" name="seriNo" id="seriNo" class="form-control" value="@Model.SearchModel.SeriNo" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="demirbasKodu" class="control-label">Demirbaş Kodu</label>
+                            <input type="text" name="demirbasKodu" id="demirbasKodu" class="form-control" value="@ViewBag.DemirbasKodu" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="kategori" class="control-label">Kategori</label>
+                            <select name="kategori" id="kategori" class="form-control" asp-items="ViewBag.Kategoriler">
+                                <option value="">-- Seçiniz --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="baslangicTarihi" class="control-label">Başlangıç Tarihi</label>
+                            <input type="date" name="baslangicTarihi" id="baslangicTarihi" class="form-control" value="@ViewBag.BaslangicTarihi" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="bitisTarihi" class="control-label">Bitiş Tarihi</label>
+                            <input type="date" name="bitisTarihi" id="bitisTarihi" class="form-control" value="@ViewBag.BitisTarihi" />
+                        </div>
+                    </div>
+                    <div class="col-md-9 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="fas fa-search"></i> Ara
+                        </button>
+                        <a asp-action="EvveliyatArsivi" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Temizle
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-archive me-1"></i>
+            Evveliyat Kayıtları
+        </div>
+        <div class="card-body">
+            <div class="accordion" id="evveliyatAccordion">
+                @foreach (var item in Model.Demirbaslar)
+                {
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="heading_@item.Id">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@item.Id" aria-expanded="false" aria-controls="collapse_@item.Id">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <strong>@item.DemirbasKodu</strong> - @item.Ad
+                                    </div>
+                                    <div class="text-muted">
+                                        <span class="badge bg-primary">@item.Kategori</span>
+                                        <span class="badge bg-secondary">@item.Durum</span>
+                                        <span class="badge bg-info">@(item.SeriNo ?? "Seri No Yok")</span>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse_@item.Id" class="accordion-collapse collapse" aria-labelledby="heading_@item.Id" data-bs-parent="#evveliyatAccordion">
+                            <div class="accordion-body">
+                                <ul class="nav nav-tabs" id="historyTabs_@item.Id" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="zimmet-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#zimmet_@item.Id" type="button" role="tab" aria-controls="zimmet_@item.Id" aria-selected="true">Zimmet Geçmişi (@item.Zimmetler.Count)</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="ariza-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#ariza_@item.Id" type="button" role="tab" aria-controls="ariza_@item.Id" aria-selected="false">Arıza Geçmişi (@(item.Arizalar?.Count ?? 0))</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="bakim-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#bakim_@item.Id" type="button" role="tab" aria-controls="bakim_@item.Id" aria-selected="false">Bakım Geçmişi (@(item.Bakimlar?.Count ?? 0))</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="historyTabsContent_@item.Id">
+                                    <div class="tab-pane fade show active" id="zimmet_@item.Id" role="tabpanel" aria-labelledby="zimmet-tab_@item.Id">
+                                        <div class="p-3">
+                                            <table class="table table-sm table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Personel</th>
+                                                        <th>Zimmet Tarihi</th>
+                                                        <th>İade Tarihi</th>
+                                                        <th>Durum</th>
+                                                        <th>Açıklama</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (item.Zimmetler != null && item.Zimmetler.Any())
+                                                    {
+                                                        @foreach (var zimmet in item.Zimmetler.OrderByDescending(z => z.ZimmetTarihi))
+                                                        {
+                                                            <tr>
+                                                                <td>@zimmet.Personel.AdSoyad</td>
+                                                                <td>@zimmet.ZimmetTarihi.ToShortDateString()</td>
+                                                                <td>@(zimmet.IadeTarihi.HasValue ? zimmet.IadeTarihi.Value.ToShortDateString() : "-")</td>
+                                                                <td>@(zimmet.IsAktif ? "Aktif" : "İade Edildi")</td>
+                                                                <td>@(zimmet.Aciklama ?? "-")</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="5" class="text-center">Zimmet kaydı bulunamadı.</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="ariza_@item.Id" role="tabpanel" aria-labelledby="ariza-tab_@item.Id">
+                                        <div class="p-3">
+                                            <table class="table table-sm table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tarih</th>
+                                                        <th>Bildiren</th>
+                                                        <th>Açıklama</th>
+                                                        <th>Durum</th>
+                                                        <th>Çözüm</th>
+                                                        <th>Çözüm Tarihi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (item.Arizalar != null && item.Arizalar.Any())
+                                                    {
+                                                        @foreach (var ariza in item.Arizalar.OrderByDescending(a => a.ArizaTarihi))
+                                                        {
+                                                            <tr>
+                                                                <td>@ariza.ArizaTarihi.ToShortDateString()</td>
+                                                                <td>@ariza.Bildiren.AdSoyad</td>
+                                                                <td>@ariza.Aciklama</td>
+                                                                <td>@ariza.Durum</td>
+                                                                <td>@(ariza.Cozum ?? "-")</td>
+                                                                <td>@(ariza.CozumTarihi.HasValue ? ariza.CozumTarihi.Value.ToShortDateString() : "-")</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="6" class="text-center">Arıza kaydı bulunamadı.</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="bakim_@item.Id" role="tabpanel" aria-labelledby="bakim-tab_@item.Id">
+                                        <div class="p-3">
+                                            <table class="table table-sm table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tarih</th>
+                                                        <th>Bakım Türü</th>
+                                                        <th>Yapılan İşlemler</th>
+                                                        <th>Bakım Yapan</th>
+                                                        <th>Durum</th>
+                                                        <th>Sonraki Bakım</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (item.Bakimlar != null && item.Bakimlar.Any())
+                                                    {
+                                                        @foreach (var bakim in item.Bakimlar.OrderByDescending(b => b.BakimTarihi))
+                                                        {
+                                                            <tr>
+                                                                <td>@bakim.BakimTarihi.ToShortDateString()</td>
+                                                                <td>@bakim.BakimTuru</td>
+                                                                <td>@(bakim.YapilanIslemler ?? "-")</td>
+                                                                <td>@bakim.BakimYapan.AdSoyad</td>
+                                                                <td>@bakim.Durum</td>
+                                                                <td>@(bakim.SonrakiBakimTarihi.HasValue ? bakim.SonrakiBakimTarihi.Value.ToShortDateString() : "-")</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="6" class="text-center">Bakım kaydı bulunamadı.</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (!Model.Demirbaslar.Any())
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Arama kriterlerine uygun kayıt bulunamadı.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Set selected value for kategori dropdown
+            $("#kategori").val('@Model.SearchModel.Kategori');
+        });
+    </script>
+}

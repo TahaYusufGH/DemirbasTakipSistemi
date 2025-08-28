@@ -1,0 +1,89 @@
+@model IEnumerable<DemirbaşTakipSistemi.Models.SarfMalzeme>
+
+@{
+    ViewData["Title"] = "Depo Sarf Malzemeler";
+}
+
+<div class="container-fluid">
+    <h2>Depo Sarf Malzemeler</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Ayarlar" class="btn btn-primary">
+                    <i class="fas fa-cogs"></i> Sarf Malzeme Ayarları
+                </a>
+                <a asp-action="MalzemeVer" class="btn btn-success">
+                    <i class="fas fa-share-square"></i> Sarf Malzeme Ver
+                </a>
+                <a asp-action="MalzemeArsivi" class="btn btn-info">
+                    <i class="fas fa-archive"></i> Sarf Malzeme Arşivi
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-boxes me-1"></i>
+            Sarf Malzeme Listesi
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="sarfMalzemeTable">
+                    <thead>
+                        <tr>
+                            <th>Malzeme Kodu</th>
+                            <th>Kategori</th>
+                            <th>Malzeme Adı</th>
+                            <th>Marka/Model</th>
+                            <th>Mevcut Stok</th>
+                            <th>Min. Stok</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.MalzemeKodu</td>
+                                <td>@item.Kategori</td>
+                                <td>@item.Ad</td>
+                                <td>@item.Marka @(string.IsNullOrEmpty(item.Model) ? "" : "/ " + item.Model)</td>
+                                <td>@item.MevcutStok @item.Birim</td>
+                                <td>@item.MinimumStok @item.Birim</td>
+                                <td>
+                                    @if (item.MevcutStok <= 0)
+                                    {
+                                        <span class="badge bg-danger">Stokta Yok</span>
+                                    }
+                                    else if (item.MevcutStok <= item.MinimumStok)
+                                    {
+                                        <span class="badge bg-warning text-dark">Kritik Stok</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Yeterli Stok</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sarfMalzemeTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+                },
+                order: [[1, 'asc'], [2, 'asc']]
+            });
+        });
+    </script>
+}

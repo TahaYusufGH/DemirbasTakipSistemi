@@ -1,0 +1,77 @@
+@model DemirbaşTakipSistemi.Models.Ariza
+
+@{
+    ViewData["Title"] = "Arıza Kaydı Sil";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Uyarı!</strong> Bu arıza kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-info-circle me-1"></i>
+            Arıza Bilgileri
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Demirbaş</dt>
+                <dd class="col-sm-9">
+                    <a asp-controller="Demirbas" asp-action="Details" asp-route-id="@Model.DemirbasId">
+                        @Model.Demirbas.DemirbasKodu - @Model.Demirbas.Ad
+                    </a>
+                </dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ArizaTarihi)</dt>
+                <dd class="col-sm-9">@Model.ArizaTarihi.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Aciklama)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Aciklama)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Durum)</dt>
+                <dd class="col-sm-9">
+                    @{
+                        var badgeClass = Model.Durum switch
+                        {
+                            "Beklemede" => "bg-warning",
+                            "İşleme Alındı" => "bg-info",
+                            "Çözüldü" => "bg-success",
+                            "İptal Edildi" => "bg-danger",
+                            _ => "bg-secondary"
+                        };
+                    }
+                    <span class="badge @badgeClass">@Model.Durum</span>
+                </dd>
+
+                <dt class="col-sm-3">Bildiren</dt>
+                <dd class="col-sm-9">@($"{Model.Bildiren.Ad} {Model.Bildiren.Soyad}")</dd>
+
+                @if (!string.IsNullOrEmpty(Model.Cozum))
+                {
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Cozum)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Cozum)</dd>
+                }
+
+                @if (Model.CozumTarihi.HasValue)
+                {
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CozumTarihi)</dt>
+                    <dd class="col-sm-9">@Model.CozumTarihi.Value.ToString("dd.MM.yyyy HH:mm")</dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash me-1"></i> Sil
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+        </a>
+    </form>
+</div> 

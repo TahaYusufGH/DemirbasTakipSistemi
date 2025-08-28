@@ -1,0 +1,126 @@
+@model DemirbaşTakipSistemi.Models.Zimmet
+@{
+    ViewData["Title"] = "Zimmet İade";
+    Layout = "_Layout";
+}
+
+<div class="page-header">
+    <h1 class="h3 mb-4 text-primary">
+        <i class="fas fa-undo-alt me-2"></i>Zimmet İade İşlemi
+    </h1>
+</div>
+
+<div class="row fade-in">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-check-circle me-1"></i>Zimmet İade Onayı
+                </h6>
+                <span class="badge bg-warning">İade İşlemi</span>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Dikkat!</strong> Aşağıdaki demirbaşı iade almak istediğinizden emin misiniz?
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="detail-card bg-light p-3 rounded mb-3">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-laptop me-1"></i>Demirbaş Bilgileri
+                            </h6>
+                            <div class="detail-row">
+                                <div class="detail-label">Demirbaş Kodu</div>
+                                <div class="detail-value fw-bold">@Model.Demirbas.DemirbasKodu</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Demirbaş Adı</div>
+                                <div class="detail-value">@Model.Demirbas.Ad</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Seri No</div>
+                                <div class="detail-value">@(Model.Demirbas.SeriNo ?? "-")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-card bg-light p-3 rounded mb-3">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-user me-1"></i>Zimmet Bilgileri
+                            </h6>
+                            <div class="detail-row">
+                                <div class="detail-label">Zimmetli Personel</div>
+                                <div class="detail-value">
+                                    <span class="fw-bold">@Model.Personel.AdSoyad</span>
+                                    <div class="small text-muted">@Model.Personel.Departman</div>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Zimmet Tarihi</div>
+                                <div class="detail-value">
+                                    <span class="badge bg-primary">@Model.ZimmetTarihi.ToString("dd.MM.yyyy")</span>
+                                    <div class="small text-muted">@Model.ZimmetTarihi.ToString("HH:mm")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form asp-action="Iade" method="post" class="slide-in">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user-check me-1"></i>Teslim Alan Personel
+                                </label>
+                                <select name="TeslimAlanId" class="form-select select2" asp-items="ViewBag.TeslimAlanlar" required>
+                                    <option value="">-- Teslim Alan Seçiniz --</option>
+                                </select>
+                                <div class="form-text text-muted">Demirbaşı teslim alan yetkiliyi seçiniz</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-undo-alt me-1"></i> İade Al
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary ms-2">
+                            <i class="fas fa-times me-1"></i> İptal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Select2 başlat
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: 'Teslim alan personeli seçiniz'
+            });
+            
+            // Form submit animasyonu
+            $('form').on('submit', function() {
+                Swal.fire({
+                    title: 'İşleniyor...',
+                    text: 'İade işlemi gerçekleştiriliyor, lütfen bekleyiniz.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            });
+        });
+    </script>
+} 
+} 

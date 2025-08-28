@@ -1,0 +1,57 @@
+@model DemirbaşTakipSistemi.Models.SarfMalzeme
+
+@{
+    ViewData["Title"] = "Sarf Malzeme Sil";
+}
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0"><i class="fas fa-trash-alt me-2"></i> @ViewData["Title"]</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i> <strong>Uyarı:</strong> Bu sarf malzemeyi silmek istediğinizden emin misiniz?
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-3">Temel Bilgiler</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Malzeme Kodu</dt>
+                        <dd class="col-sm-8">@Model.MalzemeKodu</dd>
+
+                        <dt class="col-sm-4">Ad</dt>
+                        <dd class="col-sm-8">@Model.Ad</dd>
+
+                        <dt class="col-sm-4">Kategori</dt>
+                        <dd class="col-sm-8">@Model.Kategori</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3">Stok Bilgileri</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Birim</dt>
+                        <dd class="col-sm-8">@Model.Birim</dd>
+
+                        <dt class="col-sm-4">Mevcut Stok</dt>
+                        <dd class="col-sm-8">@Model.MevcutStok @Model.Birim</dd>
+
+                        <dt class="col-sm-4">Minimum Stok</dt>
+                        <dd class="col-sm-8">@Model.MinimumStok @Model.Birim</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                </a>
+            </form>
+        </div>
+    </div>
+</div> 

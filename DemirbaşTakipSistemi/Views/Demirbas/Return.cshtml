@@ -1,0 +1,49 @@
+@model DemirbaşTakipSistemi.Models.Zimmet
+
+@{
+    ViewData["Title"] = "Demirbaş İade";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Uyarı!</strong> Bu demirbaşı iade almak istediğinizden emin misiniz?
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-info-circle me-1"></i>
+            Zimmet Bilgileri
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Demirbaş</dt>
+                <dd class="col-sm-9">@Model.Demirbas.DemirbasKodu - @Model.Demirbas.Ad</dd>
+
+                <dt class="col-sm-3">Zimmetli Personel</dt>
+                <dd class="col-sm-9">@($"{Model.Personel.Ad} {Model.Personel.Soyad}")</dd>
+
+                <dt class="col-sm-3">Zimmet Tarihi</dt>
+                <dd class="col-sm-9">@Model.ZimmetTarihi.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Teslim Eden</dt>
+                <dd class="col-sm-9">@($"{Model.TeslimEden?.Ad} {Model.TeslimEden?.Soyad}")</dd>
+
+                <dt class="col-sm-3">Açıklama</dt>
+                <dd class="col-sm-9">@Model.Aciklama</dd>
+            </dl>
+
+            <form asp-action="ReturnConfirmed" class="mt-4">
+                <input type="hidden" asp-for="DemirbasId" />
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-undo me-1"></i> İade Al
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+                </a>
+            </form>
+        </div>
+    </div>
+</div> 

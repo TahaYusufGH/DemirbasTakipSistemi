@@ -1,0 +1,91 @@
+@model IEnumerable<DemirbaşTakipSistemi.Models.Zimmet>
+@{
+    ViewData["Title"] = "Tüm Zimmetler";
+    Layout = "_Layout";
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h2 class="text-primary"><i class="fas fa-clipboard-list me-2"></i>Tüm Zimmetler</h2>
+    <a class="btn btn-success" asp-action="Create">
+        <i class="fas fa-plus-circle me-2"></i>Yeni Zimmet Ata
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle datatable">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-laptop me-2"></i>Demirbaş</th>
+                        <th><i class="fas fa-user me-2"></i>Personel</th>
+                        <th><i class="fas fa-calendar-alt me-2"></i>Zimmet Tarihi</th>
+                        <th><i class="fas fa-calendar-check me-2"></i>İade Tarihi</th>
+                        <th><i class="fas fa-cog me-2"></i>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="fade-in">
+                        <td>
+                            <span class="fw-bold">@item.Demirbas?.Ad</span>
+                            <div class="small text-muted">@item.Demirbas?.SeriNo</div>
+                        </td>
+                        <td>
+                            <span class="fw-bold">@item.Personel?.AdSoyad</span>
+                            <div class="small text-muted">@item.Personel?.Departman</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">@item.ZimmetTarihi.ToString("dd.MM.yyyy")</span>
+                            <div class="small text-muted">@item.ZimmetTarihi.ToString("HH:mm")</div>
+                        </td>
+                        <td>
+                            @if (item.IadeTarihi != null)
+                            {
+                                <span class="badge bg-success">@item.IadeTarihi?.ToString("dd.MM.yyyy")</span>
+                                <div class="small text-muted">@item.IadeTarihi?.ToString("HH:mm")</div>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Zimmette</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                                @if (item.IadeTarihi == null)
+                                {
+                                    <a class="btn btn-sm btn-danger" asp-action="Iade" asp-route-id="@item.Id">
+                                        <i class="fas fa-undo-alt me-1"></i>İade
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">İade Edildi</span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // DataTable özelleştirme
+            $('.datatable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                },
+                "order": [[2, 'desc']] // Zimmet tarihine göre sıralama
+            });
+        });
+    </script>
+} 

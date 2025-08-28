@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Raporlar";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-desktop me-2"></i> Demirbaş Raporu</h5>
+                </div>
+                <div class="card-body">
+                    <p>Demirbaşların durumlarına, kategorilerine ve konumlarına göre dağılımını görüntüleyin.</p>
+                    <ul>
+                        <li>Durum dağılımı</li>
+                        <li>Kategori dağılımı</li>
+                        <li>Oda bazlı dağılım</li>
+                        <li>Zimmet bilgileri</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("DemirbasRaporu", "Report")" class="btn btn-primary">
+                        <i class="fas fa-chart-pie me-1"></i> Raporu Görüntüle
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-tools me-2"></i> Arıza Raporu</h5>
+                </div>
+                <div class="card-body">
+                    <p>Arıza kayıtlarının durumlarına ve demirbaşlara göre dağılımını görüntüleyin.</p>
+                    <ul>
+                        <li>Arıza durumu dağılımı</li>
+                        <li>Demirbaş bazlı arıza analizi</li>
+                        <li>Çözüm istatistikleri</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("ArizaRaporu", "Report")" class="btn btn-warning">
+                        <i class="fas fa-chart-line me-1"></i> Raporu Görüntüle
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-boxes me-2"></i> Depo Raporu</h5>
+                </div>
+                <div class="card-body">
+                    <p>Sarf malzemelerin stok durumlarını ve depo işlemlerinin analizini görüntüleyin.</p>
+                    <ul>
+                        <li>Stok durumu analizi</li>
+                        <li>İşlem tipi dağılımı</li>
+                        <li>Personel talep analizi</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("DepoRaporu", "Report")" class="btn btn-success">
+                        <i class="fas fa-chart-bar me-1"></i> Raporu Görüntüle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,111 @@
+@model DemirbaşTakipSistemi.Models.Zimmet
+@{
+    ViewData["Title"] = "Zimmet Detayları";
+    Layout = "_Layout";
+}
+
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h1 class="h3 mb-4 text-primary">
+        <i class="fas fa-clipboard-list me-2"></i>Zimmet Detayları
+    </h1>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+        </a>
+        @if (User.IsInRole("Admin") && Model.IsAktif)
+        {
+            <a asp-action="Iade" asp-route-id="@Model.Id" class="btn btn-warning ms-2">
+                <i class="fas fa-undo me-1"></i> İade Al
+            </a>
+        }
+    </div>
+</div>
+
+<div class="row fade-in">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4 detail-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-info-circle me-1"></i>Zimmet Bilgileri
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">Demirbaş Kodu</div>
+                            <div class="detail-value fw-bold">@Model.Demirbas.DemirbasKodu</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Demirbaş Adı</div>
+                            <div class="detail-value">@Model.Demirbas.Ad</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Zimmetlenen Personel</div>
+                            <div class="detail-value">
+                                <span class="fw-bold">@Model.Personel.AdSoyad</span>
+                                <div class="small text-muted">@Model.Personel.Departman</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Zimmet Tarihi</div>
+                            <div class="detail-value">
+                                <span class="badge bg-primary">@Model.ZimmetTarihi.ToString("dd.MM.yyyy")</span>
+                                <div class="small text-muted">@Model.ZimmetTarihi.ToString("HH:mm")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">Teslim Eden</div>
+                            <div class="detail-value">@(Model.TeslimEden?.AdSoyad ?? "-")</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Zimmet Durumu</div>
+                            <div class="detail-value">
+                                @if (Model.IsAktif)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">İade Edildi</span>
+                                }
+                            </div>
+                        </div>
+                        @if (!Model.IsAktif)
+                        {
+                            <div class="detail-row">
+                                <div class="detail-label">İade Tarihi</div>
+                                <div class="detail-value">
+                                    <span class="badge bg-info">@Model.IadeTarihi?.ToString("dd.MM.yyyy")</span>
+                                    <div class="small text-muted">@Model.IadeTarihi?.ToString("HH:mm")</div>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Teslim Alan</div>
+                                <div class="detail-value">@(Model.TeslimAlan?.AdSoyad ?? "-")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.Aciklama))
+                {
+                    <div class="mt-4">
+                        <div class="card bg-light border-0">
+                            <div class="card-header bg-light">
+                                <h6 class="m-0 font-weight-bold">
+                                    <i class="fas fa-comment-alt me-1"></i>Açıklama
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0">@Model.Aciklama</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div> 

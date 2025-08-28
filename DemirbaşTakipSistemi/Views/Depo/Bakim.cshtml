@@ -1,0 +1,196 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.DepoViewModel
+
+@{
+    ViewData["Title"] = "Depo Bakım";
+}
+
+<div class="container-fluid">
+    <h2>Depo Bakım</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-tools me-1"></i>
+            Bakım / Arıza Gerektiren Demirbaşlar
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="bakimTable">
+                    <thead>
+                        <tr>
+                            <th>Demirbaş Kodu</th>
+                            <th>Seri No</th>
+                            <th>Demirbaş Adı</th>
+                            <th>Kategori</th>
+                            <th>Durum</th>
+                            <th>Oda</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Demirbaslar)
+                        {
+                            <tr>
+                                <td>@item.DemirbasKodu</td>
+                                <td>@(item.SeriNo ?? "-")</td>
+                                <td>@item.Ad</td>
+                                <td>@item.Kategori</td>
+                                <td>@item.Durum</td>
+                                <td>@(item.Oda?.Ad ?? "-")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Düzenle
+                                        </a>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="collapse" data-bs-target="#evveliyat_@item.Id" aria-expanded="false" aria-controls="evveliyat_@item.Id">
+                                            <i class="fas fa-history"></i> Evveliyat
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" class="p-0">
+                                    <div class="collapse" id="evveliyat_@item.Id">
+                                        <div class="card card-body m-2">
+                                            <ul class="nav nav-tabs" id="historyTabs_@item.Id" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="bakim-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#bakim_@item.Id" type="button" role="tab" aria-controls="bakim_@item.Id" aria-selected="true">Bakım Geçmişi</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="ariza-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#ariza_@item.Id" type="button" role="tab" aria-controls="ariza_@item.Id" aria-selected="false">Arıza Geçmişi</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="zimmet-tab_@item.Id" data-bs-toggle="tab" data-bs-target="#zimmet_@item.Id" type="button" role="tab" aria-controls="zimmet_@item.Id" aria-selected="false">Zimmet Geçmişi</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="historyTabsContent_@item.Id">
+                                                <div class="tab-pane fade show active" id="bakim_@item.Id" role="tabpanel" aria-labelledby="bakim-tab_@item.Id">
+                                                    <div class="p-3">
+                                                        <h5>Bakım Geçmişi</h5>
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tarih</th>
+                                                                    <th>Yapılan İşlem</th>
+                                                                    <th>Yapan Personel</th>
+                                                                    <th>Açıklama</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (item.Bakimlar != null && item.Bakimlar.Any())
+                                                                {
+                                                                    @foreach (var bakim in item.Bakimlar.OrderByDescending(b => b.BakimTarihi))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@bakim.BakimTarihi.ToShortDateString()</td>
+                                                                            <td>@(bakim.YapilanIslemler ?? "-")</td>
+                                                                            <td>@bakim.BakimYapan.AdSoyad</td>
+                                                                            <td>@bakim.Aciklama</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center">Bakım kaydı bulunamadı.</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="ariza_@item.Id" role="tabpanel" aria-labelledby="ariza-tab_@item.Id">
+                                                    <div class="p-3">
+                                                        <h5>Arıza Geçmişi</h5>
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tarih</th>
+                                                                    <th>Bildiren</th>
+                                                                    <th>Açıklama</th>
+                                                                    <th>Durum</th>
+                                                                    <th>Çözüm</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (item.Arizalar != null && item.Arizalar.Any())
+                                                                {
+                                                                    @foreach (var ariza in item.Arizalar.OrderByDescending(a => a.ArizaTarihi))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@ariza.ArizaTarihi.ToShortDateString()</td>
+                                                                            <td>@ariza.Bildiren.AdSoyad</td>
+                                                                            <td>@ariza.Aciklama</td>
+                                                                            <td>@ariza.Durum</td>
+                                                                            <td>@(ariza.Cozum ?? "-")</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="5" class="text-center">Arıza kaydı bulunamadı.</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="zimmet_@item.Id" role="tabpanel" aria-labelledby="zimmet-tab_@item.Id">
+                                                    <div class="p-3">
+                                                        <h5>Zimmet Geçmişi</h5>
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Personel</th>
+                                                                    <th>Zimmet Tarihi</th>
+                                                                    <th>İade Tarihi</th>
+                                                                    <th>Durum</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (item.Zimmetler != null && item.Zimmetler.Any())
+                                                                {
+                                                                    @foreach (var zimmet in item.Zimmetler.OrderByDescending(z => z.ZimmetTarihi))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@zimmet.Personel.AdSoyad</td>
+                                                                            <td>@zimmet.ZimmetTarihi.ToShortDateString()</td>
+                                                                            <td>@(zimmet.IadeTarihi.HasValue ? zimmet.IadeTarihi.Value.ToShortDateString() : "-")</td>
+                                                                            <td>@(zimmet.IsAktif ? "Aktif" : "İade Edildi")</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center">Zimmet kaydı bulunamadı.</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#bakimTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+                }
+            });
+        });
+    </script>
+}

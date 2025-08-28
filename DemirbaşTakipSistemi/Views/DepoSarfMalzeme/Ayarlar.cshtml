@@ -1,0 +1,164 @@
+@model DemirbaşTakipSistemi.Models.ViewModels.SarfMalzemeAyarlarViewModel
+
+@{
+    ViewData["Title"] = "Sarf Malzeme Ayarları";
+}
+
+<div class="container-fluid">
+    <h2>Sarf Malzeme Ayarları</h2>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Sarf Malzeme Listesine Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-folder-plus me-1"></i>
+                    Yeni Kategori Ekle
+                </div>
+                <div class="card-body">
+                    <form asp-action="YeniKategoriEkle" method="post">
+                        <div class="form-group mb-3">
+                            <label for="yeniKategori" class="form-label">Kategori Adı</label>
+                            <input type="text" id="yeniKategori" name="yeniKategori" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> Kategori Ekle
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list me-1"></i>
+                    Mevcut Kategoriler
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var kategori in Model.Kategoriler)
+                        {
+                            <div class="list-group-item">@kategori</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-box-open me-1"></i>
+                    Yeni Malzeme Ekle
+                </div>
+                <div class="card-body">
+                    <form asp-action="YeniMalzemeEkle" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.MalzemeKodu" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.MalzemeKodu" class="form-control" required />
+                                    <span asp-validation-for="YeniMalzeme.MalzemeKodu" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.Ad" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.Ad" class="form-control" required />
+                                    <span asp-validation-for="YeniMalzeme.Ad" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.Kategori" class="form-label"></label>
+                                    <select asp-for="YeniMalzeme.Kategori" class="form-control" required>
+                                        <option value="">-- Kategori Seçin --</option>
+                                        @foreach (var kategori in Model.Kategoriler)
+                                        {
+                                            <option value="@kategori">@kategori</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="YeniMalzeme.Kategori" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.Birim" class="form-label"></label>
+                                    <select asp-for="YeniMalzeme.Birim" class="form-control" required>
+                                        <option value="">-- Birim Seçin --</option>
+                                        <option value="Adet">Adet</option>
+                                        <option value="Kutu">Kutu</option>
+                                        <option value="Paket">Paket</option>
+                                        <option value="Kg">Kg</option>
+                                        <option value="Litre">Litre</option>
+                                        <option value="Metre">Metre</option>
+                                    </select>
+                                    <span asp-validation-for="YeniMalzeme.Birim" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.Marka" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.Marka" class="form-control" required />
+                                    <span asp-validation-for="YeniMalzeme.Marka" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.Model" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.Model" class="form-control" />
+                                    <span asp-validation-for="YeniMalzeme.Model" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.MevcutStok" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.MevcutStok" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="YeniMalzeme.MevcutStok" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="YeniMalzeme.MinimumStok" class="form-label"></label>
+                                    <input asp-for="YeniMalzeme.MinimumStok" class="form-control" type="number" min="0" required />
+                                    <span asp-validation-for="YeniMalzeme.MinimumStok" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="YeniMalzeme.Aciklama" class="form-label"></label>
+                            <textarea asp-for="YeniMalzeme.Aciklama" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="YeniMalzeme.Aciklama" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> Malzeme Ekle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
