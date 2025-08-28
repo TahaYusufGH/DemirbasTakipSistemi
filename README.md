@@ -219,3 +219,6 @@ dotnet ef database update
 ## 📝 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
+
+
+<img width="1894" height="907" alt="Ekran görüntüsü 2025-08-26 113626" src="https://github.com/user-attachments/assets/b92b41ba-fa36-4630-bb9f-7ab3ce5106fa" />
